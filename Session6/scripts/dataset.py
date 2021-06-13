@@ -7,7 +7,7 @@ def train_dataset(train_transform, root_dir = '../data'):
                    transform = train_transform)
     return tr_dataset
 
-def train_dataset(test_transform, root_dir = '../data'):
+def test_dataset(test_transform, root_dir = '../data'):
 
     ts_dataset = datasets.MNIST(root_dir, train=False, download=True,
                    transform = test_transform)
