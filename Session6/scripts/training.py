@@ -4,7 +4,7 @@ if IN_COLAB:
     from tqdm.notebook import tqdm
 else:
     import tqdm
-def train(model, device, train_loader, loss_function, optimizer, epoch):
+def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1 = None):
     average_epoch_loss = 0
     correct_predictions_epoch = 0
     model.train()
@@ -15,6 +15,11 @@ def train(model, device, train_loader, loss_function, optimizer, epoch):
             optimizer.zero_grad()
             output = model(data)
             loss = loss_function(output, target)
+            l1 = 0
+            if lambda_l1:
+                for p in model.parameters():
+                    l1 = l1 + p.abs().sum()
+            loss = loss + (lambda_l1 * l1)
             loss.backward()
             optimizer.step()
             average_epoch_loss += loss.item()
