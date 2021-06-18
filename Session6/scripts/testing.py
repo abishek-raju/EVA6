@@ -12,6 +12,7 @@ def test(model, device, test_loader, epoch, loss_function, lambda_l1 = None):
     with torch.no_grad():
         with tqdm(test_loader, unit="batch") as tepoch:
             for batch_idx, (data, target) in enumerate(tepoch):
+                loss = 0
                 tepoch.set_description(f"Test  Epoch {epoch}")
                 data, target = data.to(device), target.to(device)
                 output = model(data)

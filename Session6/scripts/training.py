@@ -10,6 +10,7 @@ def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1
     model.train()
     with tqdm(train_loader, unit="batch") as tepoch:
         for batch_idx, (data, target) in enumerate(tepoch):
+            loss = 0
             tepoch.set_description(f"Train Epoch {epoch}")
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
