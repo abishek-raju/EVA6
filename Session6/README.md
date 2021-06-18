@@ -44,15 +44,15 @@ Click [here](https://tensorboard.dev/experiment/3e9S68TNSYuwfwmSL5iyXw/) for vis
 
 
 <p float="left">
-  <img src="Accuracy_1.svg" width="200" />
-  <img src="Accuracy_2.svg" width="200" /> 
-  <img src="Accuracy_3.svg" width="200" />
+  <img src="Accuracy_1.svg" width="300" />
+  <img src="Accuracy_2.svg" width="300" /> 
+  <img src="Accuracy_3.svg" width="300" />
 </p>
 
 <p float="left">
-  <img src="Loss_1.svg" width="200" />
-  <img src="Loss_2.svg" width="200" /> 
-  <img src="Loss_3.svg" width="200" />
+  <img src="Loss_1.svg" width="300" />
+  <img src="Loss_2.svg" width="300" /> 
+  <img src="Loss_3.svg" width="300" />
 </p>
 
 
