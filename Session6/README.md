@@ -44,6 +44,7 @@ Click [here](https://tensorboard.dev/experiment/3e9S68TNSYuwfwmSL5iyXw/) for vis
 
 
 **6.Loss and Accuracy Curves:**<a name="loss_accuracy"></a>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Group normalisation L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Layer normalisation L2 L1&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Batch normalisation L1 and L2
 <p float="left">
   <img src="Accuracy_1.svg" width="300" />
   <img src="Accuracy_2.svg" width="300" /> 
