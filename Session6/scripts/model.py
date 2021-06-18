@@ -1,12 +1,21 @@
 import torch.nn as nn
 import torch.nn.functional as F
+
+def normalization_technique(normalization,in_channels,groups = None):
+    if normalization == "GN":
+        return nn.GroupNorm(groups,in_channels)
+    elif normalization == "LN":
+        return nn.GroupNorm(1,in_channels)
+    else:
+        return nn.BatchNorm2d(in_channels)
+
 class Net(nn.Module):
-    def __init__(self):
+    def __init__(self ,norm_type : "BN/LN/GN"):
         super(Net, self).__init__()
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3),
             nn.ReLU(),
-            nn.BatchNorm2d(8),
+            normalization_technique("BN",8),
             nn.Dropout(0.01)
         )
         #28/26/3
