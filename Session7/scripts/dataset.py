@@ -17,7 +17,7 @@ def train_dataset(train_transform, dataset : str,
                        transform = train_transform)
     elif dataset == "CIFAR10":
         tr_dataset = datasets.CIFAR10(root_dir, train=True,
-                                        download=True, train_transform)
+                                        download=True, transform = train_transform)
     return tr_dataset
 
 def test_dataset(test_transform, dataset : str, 
@@ -36,5 +36,5 @@ def test_dataset(test_transform, dataset : str,
                        transform = test_transform)
     elif dataset == "CIFAR10":
         ts_dataset = datasets.CIFAR10(root_dir, train=False,
-                                        download=True, test_transform)
+                                        download=True, transform = test_transform)
     return ts_dataset
