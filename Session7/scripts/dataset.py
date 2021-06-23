@@ -7,11 +7,11 @@ class cifar10:
     cifar10 dataset class which call the transformations to augment the data
     """
     def __init__(self, root_dir : str  = '../data',
-                 train_data : bool = False , download_data : bool = True,
-                 transform_compose : "transform_obj" = None)->"dataset_obj":
-        self.transform = transform_compose
-        self.cifar_ = datasets.CIFAR10(root_dir, train=train_data,
-                                        download=download_data)
+                 train : bool = False , download : bool = True,
+                 transform : "transform_obj" = None)->"dataset_obj":
+        self.transform = transform
+        self.cifar_ = datasets.CIFAR10(root_dir, train=train,
+                                        download=download)
     def __getitem__(self,index):
         image, label = self.cifar_[index]
         if self.transform:
