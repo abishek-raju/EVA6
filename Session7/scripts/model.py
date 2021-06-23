@@ -13,7 +13,7 @@ class Net(nn.Module):
     def __init__(self ,norm_type : "BN/LN/GN"):
         super(Net, self).__init__()
         self.convblock1 = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3),
+            nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3),
             nn.ReLU(),
             normalization_technique(norm_type,8),
             nn.Dropout(0.01)
