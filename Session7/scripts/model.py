@@ -13,52 +13,52 @@ class Net(nn.Module):
     def __init__(self ,norm_type : "BN/LN/GN"):
         super(Net, self).__init__()
         self.convblock1 = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=8, kernel_size=3),
+            nn.Conv2d(in_channels=3, out_channels=16, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,8),
+            normalization_technique(norm_type,16),
             nn.Dropout(0.01)
         )
         #28/26/3
         self.convblock2 = nn.Sequential(
-            nn.Conv2d(in_channels=8, out_channels=8, kernel_size=3),
+            nn.Conv2d(in_channels=16, out_channels=16, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,8),
+            normalization_technique(norm_type,16),
             nn.Dropout(0.01)
         )
         #26/24/5
         self.convblock3 = nn.Sequential(
-            nn.Conv2d(in_channels=8, out_channels=16, kernel_size=3),
+            nn.Conv2d(in_channels=16, out_channels=32, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,16),
+            normalization_technique(norm_type,32),
             nn.Dropout(0.01)
         )
         #24/22/7
 
         self.convblock4 = nn.Sequential(
-            nn.Conv2d(in_channels=16, out_channels=18, kernel_size=3),
+            nn.Conv2d(in_channels=32, out_channels=36, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,18),
+            normalization_technique(norm_type,36),
             nn.Dropout(0.01)
         )
         #22/20/9
         self.pool = nn.MaxPool2d(2, 2)
         #20/10/10
         self.convblock5 = nn.Sequential(
-            nn.Conv2d(in_channels=18, out_channels=14, kernel_size=3),
+            nn.Conv2d(in_channels=36, out_channels=28, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,14),
+            normalization_technique(norm_type,28),
             nn.Dropout(0.01)
         )
         #10/8/14
         self.convblock6 = nn.Sequential(
-            nn.Conv2d(in_channels=14, out_channels=14, kernel_size=3),
+            nn.Conv2d(in_channels=28, out_channels=28, kernel_size=3),
             nn.ReLU(),
-            normalization_technique(norm_type,14),
+            normalization_technique(norm_type,28),
             nn.Dropout(0.01)
         )
         #8/6/18
         self.convblock7 = nn.Sequential(
-            nn.Conv2d(in_channels=14, out_channels=10, kernel_size=1),
+            nn.Conv2d(in_channels=28, out_channels=10, kernel_size=1),
             nn.ReLU(),
             normalization_technique(norm_type,10),
             nn.Dropout(0.01)
