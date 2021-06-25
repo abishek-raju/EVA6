@@ -10,6 +10,7 @@
 
 
 **1. Model Code:**<a name="model_code"></a>  
+[model.py](./scripts/model.py)
 ```python
 def base_block(in_channel_size,out_channels,norm_type = "BN",dropout_value = 0.01):
     if type(out_channels) == list and len(out_channels) == 4:
