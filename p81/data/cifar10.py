@@ -21,8 +21,8 @@ class cifar10:
         self.transform = transform
         self.cifar_ = datasets.CIFAR10(root_dir, train=train,
                                         download=download)
-        self.mean = None
-        self.std_dev = None
+        self._mean = None
+        self._std_dev = None
 
     def __getitem__(self,index):
         image, label = self.cifar_[index]
@@ -38,11 +38,11 @@ class cifar10:
         return self.cifar_.data.mean(axis=(0,1,2))/255
     @mean.setter
     def mean(self,mean_):
-        self.mean = mean_
+        self._mean = mean_
     
     @property
     def std_dev(self):
         return self.cifar_.data.std(axis=(0,1,2))/255
     @std_dev.setter
     def std_dev(self,std_dev_):
-        self.std_dev = std_dev_
+        self._std_dev = std_dev_
