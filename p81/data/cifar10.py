@@ -36,7 +36,13 @@ class cifar10:
     @property
     def mean(self):
         return self.cifar_.data.mean(axis=(0,1,2))/255
+    @cifar10.setter
+    def mean(self,mean_):
+        self.mean = mean_
     
     @property
     def std_dev(self):
         return self.cifar_.data.std(axis=(0,1,2))/255
+    @cifar10.std_dev
+    def std_dev(self,std_dev_):
+        self.std_dev = std_dev_
