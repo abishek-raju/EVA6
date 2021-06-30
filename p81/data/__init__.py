@@ -61,7 +61,7 @@ def train_dataset(train_transform, dataset : str,
         dataset : MNIST/CIFAR10.
         root_dir : path to store data.
     """
-    if(type(dataset != str)):
+    if(type(dataset) != str):
         raise(TypeError("dataset should be a string"))
     if dataset == "CIFAR10":
         tr_dataset = cifar10(root_dir, train=True,
@@ -81,7 +81,7 @@ def test_dataset(test_transform, dataset : str,
         dataset : MNIST/CIFAR10.
         root_dir : path to store data.
     """
-    if(type(dataset != str)):
+    if(type(dataset) != str):
         raise(TypeError("dataset should be a string"))
     if dataset == "CIFAR10":
         ts_dataset = cifar10(root_dir, train=False,
