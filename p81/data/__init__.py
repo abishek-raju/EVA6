@@ -28,6 +28,7 @@ def train_data(train_transforms_list : "Transform_object",
     """
     train_loader = torch.utils.data.DataLoader(train_dataset(train_transform = train_transforms_list,dataset = dataset),
     batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
+    return train_loader
 
 def test_data(test_transforms_list : "Transform_object",
                dataset : str,batch_size : int,shuffle : bool,
@@ -46,6 +47,7 @@ def test_data(test_transforms_list : "Transform_object",
     """
     test_loader = torch.utils.data.DataLoader(test_dataset(test_transform = test_transforms_list,dataset = dataset),
     batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
+    return test_loader
 
 
 def train_dataset(train_transform, dataset : str, 
