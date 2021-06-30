@@ -6,7 +6,7 @@ Created on Wed Jun 30 22:19:56 2021
 @author: rampfire
 """
 
-from . import *
+from . import cifar10
 def train_dataset(train_transform, dataset : str, 
                   root_dir : str  = '../data')->"dataset_obj":
     """
