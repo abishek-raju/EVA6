@@ -5,8 +5,49 @@ Created on Wed Jun 30 22:19:56 2021
 
 @author: rampfire
 """
-
+import torch
 from .cifar10 import cifar10
+
+
+
+
+def train_data(train_transforms_list : "Transform_object",
+               dataset : str,batch_size : int,shuffle : bool,
+               dataloader_kwargs : dict = None)->"dataloader_obj":
+    """
+    Function which returns the dataloader object according to the dataset
+    parameter.
+    
+    Params:
+        train_transforms_list : Transform's compose object.
+        dataset : MNIST/CIFAR10.
+        root_dir : path to store data.
+        batch_size : batch_size
+        shuffle : True/False
+        dataloader_kwargs : {'num_workers': 8, 'pin_memory': True}
+    """
+    train_loader = torch.utils.data.DataLoader(train_dataset(train_transform = train_transforms_list,dataset = dataset),
+    batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
+
+def test_data(test_transforms_list : "Transform_object",
+               dataset : str,batch_size : int,shuffle : bool,
+               dataloader_kwargs : dict = None)->"dataloader_obj":
+    """
+    Function which returns the dataloader object according to the dataset
+    parameter.
+    
+    Params:
+        test_transforms_list : Transform's compose object.
+        dataset : MNIST/CIFAR10.
+        root_dir : path to store data.
+        batch_size : batch_size
+        shuffle : True/False
+        dataloader_kwargs : {'num_workers': 8, 'pin_memory': True}
+    """
+    test_loader = torch.utils.data.DataLoader(test_dataset(test_transform = test_transforms_list,dataset = dataset),
+    batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
+
+
 def train_dataset(train_transform, dataset : str, 
                   root_dir : str  = '../data')->"dataset_obj":
     """
@@ -18,12 +59,13 @@ def train_dataset(train_transform, dataset : str,
         dataset : MNIST/CIFAR10.
         root_dir : path to store data.
     """
-    if dataset == "MNIST":
-        tr_dataset = datasets.MNIST(root_dir, train=True, download=True,
-                       transform = train_transform)
-    elif dataset == "CIFAR10":
+    if(type(dataset != str)):
+        raise(TypeError("dataset should be a string"))
+    if dataset == "CIFAR10":
         tr_dataset = cifar10(root_dir, train=True,
                                         download=True, transform = train_transform)
+    else:
+        raise(ValueError("Refer doc string for available Datasets"))
     return tr_dataset
 
 def test_dataset(test_transform, dataset : str, 
@@ -37,10 +79,11 @@ def test_dataset(test_transform, dataset : str,
         dataset : MNIST/CIFAR10.
         root_dir : path to store data.
     """
-    if dataset == "MNIST":
-        ts_dataset = datasets.MNIST(root_dir, train=False, download=True,
-                       transform = test_transform)
-    elif dataset == "CIFAR10":
+    if(type(dataset != str)):
+        raise(TypeError("dataset should be a string"))
+    if dataset == "CIFAR10":
         ts_dataset = cifar10(root_dir, train=False,
                                         download=True, transform = test_transform)
+    else:
+        raise(ValueError("Refer doc string for available Datasets"))
     return ts_dataset
