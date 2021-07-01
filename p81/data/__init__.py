@@ -63,7 +63,7 @@ def train_dataset(dataset : str,
     if dataset == "CIFAR10":
         tr_dataset = cifar10(root_dir, train=True,
                                         download=True)
-        tr_dataset.tranforms = train_transform_list(tr_dataset.mean,tr_dataset.std_dev)
+        tr_dataset.transforms = train_transform_list(tr_dataset.mean,tr_dataset.std_dev)
     else:
         raise(ValueError("Refer doc string for available Datasets"))
     return tr_dataset
