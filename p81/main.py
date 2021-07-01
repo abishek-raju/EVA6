@@ -41,7 +41,7 @@ def main(config_json):
     train_accuracy = []
     test_accuracy = []
     
-    for epoch in range(1, 100):
+    for epoch in range(1, config_json["epochs"]):
 
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
         scheduler.step()
