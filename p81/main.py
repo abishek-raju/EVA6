@@ -11,7 +11,7 @@ from .data import train_dataloader_obj,test_dataloader_obj
 from .models import resnet
 from .training import training,testing
 
-from torch.optim.lr_scheduler import StepLR
+from torch.optim.lr_scheduler import CosineAnnealingLR
 import torch.optim as optim
 import torch.nn.functional as F
 import torch.nn as nn
@@ -33,7 +33,8 @@ def main(config_json):
     lambda_l2 = 0
     
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
-    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
+#    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
+    scheduler = CosineAnnealingLR(optimizer, T_max=200)
     train_loss = []
     test_loss = []
     
