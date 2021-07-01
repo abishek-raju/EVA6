@@ -9,8 +9,7 @@ import torch
 from .cifar10 import cifar10
 from .transformations import train_transform_list
 
-def train_data(train_transforms_list : "Transform_object",
-               dataset : str,batch_size : int,shuffle : bool,
+def train_data(dataset : str,batch_size : int,shuffle : bool,
                dataloader_kwargs : dict = None)->"dataloader_obj":
     """
     Function which returns the dataloader object according to the dataset
