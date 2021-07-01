@@ -25,8 +25,8 @@ class cifar10:
 
     def __getitem__(self,index):
         image, label = self.cifar_[index]
-        if self.tranforms:
-            return self.tranforms(image = np.asarray(image))["image"],label
+        if self._transform:
+            return self._transform(image = np.asarray(image))["image"],label
         else:
             return image,label
     def __len__(self):
@@ -41,11 +41,11 @@ class cifar10:
         return self.cifar_.data.std(axis=(0,1,2))/255
     
     @property
-    def tranforms(self):
+    def transforms(self):
         return self._transform
     @tranforms.setter
-    def tranforms(self,tranforms):
-        self._tranforms = tranforms
+    def transforms(self,transforms):
+        self._transform = transforms
     
     
     
