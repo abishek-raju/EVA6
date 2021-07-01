@@ -17,11 +17,11 @@ import torch.nn.functional as F
 
 
 def main(config_json):
-    train_data = train_dataloader_obj(dataset = config_json["dataset"],
+    train_loader = train_dataloader_obj(dataset = config_json["dataset"],
                                       batch_size = config_json["tr_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
     
-    test_data = test_dataloader_obj(dataset = config_json["dataset"],
+    test_loader = test_dataloader_obj(dataset = config_json["dataset"],
                                       batch_size = config_json["tst_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
     
@@ -36,16 +36,20 @@ def main(config_json):
     
     train_accuracy = []
     test_accuracy = []
+    
+    lambda_l1 = 0
+    lambda_l2 = 0
+    
     for epoch in range(1, 100):
 
-    tr_loss,tr_acc = train(model, device, train_loader, F.nll_loss, optimizer, epoch, lambda_l1)
-    scheduler.step()
-    tst_loss,tst_acc = test(model, device, test_loader, epoch, F.nll_loss, lambda_l1)
-    train_loss.append(tr_loss),train_accuracy.append(tr_acc)
-    test_loss.append(tst_loss),test_accuracy.append(tst_acc)
-    print("Train_epoch : ",100*tr_acc.item())
-    print("Test_epoch : ",100*tst_acc.item())
-    print("Learning Rate : ",optimizer.param_groups[0]['lr'])
+        tr_loss,tr_acc = training(model, device, train_loader, F.nll_loss, optimizer, epoch, lambda_l1)
+        scheduler.step()
+        tst_loss,tst_acc = testing(model, device, test_loader, epoch, F.nll_loss, lambda_l1)
+        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
+        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
+        print("Train_epoch : ",100*tr_acc.item())
+        print("Test_epoch : ",100*tst_acc.item())
+        print("Learning Rate : ",optimizer.param_groups[0]['lr'])
 #    writer.add_scalars('Loss',
 #    {
 #    'train_loss': tr_loss,
