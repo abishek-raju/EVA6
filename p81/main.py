@@ -42,9 +42,9 @@ def main(config_json):
     
     for epoch in range(1, 100):
 
-        tr_loss,tr_acc = training(model, device, train_loader, F.nll_loss, optimizer, epoch, lambda_l1)
+        tr_loss,tr_acc = training(model, config_json["device"], train_loader, F.nll_loss, optimizer, epoch, lambda_l1)
         scheduler.step()
-        tst_loss,tst_acc = testing(model, device, test_loader, epoch, F.nll_loss, lambda_l1)
+        tst_loss,tst_acc = testing(model, config_json["device"], test_loader, epoch, F.nll_loss, lambda_l1)
         train_loss.append(tr_loss),train_accuracy.append(tr_acc)
         test_loss.append(tst_loss),test_accuracy.append(tst_acc)
         print("Train_epoch : ",100*tr_acc.item())
