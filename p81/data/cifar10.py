@@ -26,7 +26,7 @@ class cifar10:
     def __getitem__(self,index):
         image, label = self.cifar_[index]
         if self.transform:
-            return self.transform(image = np.asarray(image))["image"],label
+            return self._transform(image = np.asarray(image))["image"],label
         else:
             return image,label
     def __len__(self):
