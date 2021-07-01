@@ -23,7 +23,7 @@ def train_data(dataset : str,batch_size : int,shuffle : bool,
         shuffle : True/False
         dataloader_kwargs : {'num_workers': 8, 'pin_memory': True}
     """
-    train_loader = torch.utils.data.DataLoader(train_dataset(train_transform = train_transforms_list,dataset = dataset),
+    train_loader = torch.utils.data.DataLoader(train_dataset(dataset = dataset),
     batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
     return train_loader
 
@@ -42,12 +42,12 @@ def test_data(test_transforms_list : "Transform_object",
         shuffle : True/False
         dataloader_kwargs : {'num_workers': 8, 'pin_memory': True}
     """
-    test_loader = torch.utils.data.DataLoader(test_dataset(test_transform = test_transforms_list,dataset = dataset),
+    test_loader = torch.utils.data.DataLoader(test_dataset(dataset = dataset),
     batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
     return test_loader
 
 
-def train_dataset(train_transform, dataset : str, 
+def train_dataset(dataset : str, 
                   root_dir : str  = '../data')->"dataset_obj":
     """
     Function which returns the dataset object according to the dataset
@@ -68,7 +68,7 @@ def train_dataset(train_transform, dataset : str,
         raise(ValueError("Refer doc string for available Datasets"))
     return tr_dataset
 
-def test_dataset(test_transform, dataset : str, 
+def test_dataset(dataset : str, 
                   root_dir : str  = '../data')->"dataset_obj":
     """
     Function which returns the dataset object according to the dataset
