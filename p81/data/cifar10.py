@@ -16,13 +16,12 @@ class cifar10:
     cifar10 dataset class which call the transformations to augment the data
     """
     def __init__(self, root_dir : str  = '../data',
-                 train : bool = False , download : bool = True,
-                 transform : "transform_obj" = None)->"dataset_obj":
-        self.transform = transform
+                 train : bool = False , download : bool = True)->"dataset_obj":
         self.cifar_ = datasets.CIFAR10(root_dir, train=train,
                                         download=download)
         self._mean = None
         self._std_dev = None
+        self._transform = None
 
     def __getitem__(self,index):
         image, label = self.cifar_[index]
@@ -46,3 +45,13 @@ class cifar10:
     @std_dev.setter
     def std_dev(self,std_dev_):
         self._std_dev = std_dev_
+    
+    @property
+    def tranforms(self):
+        return self._transform
+    @tranforms.setter
+    def tranforms(self,tranforms_):
+        self._tranforms = tranforms_
+    
+    
+    
