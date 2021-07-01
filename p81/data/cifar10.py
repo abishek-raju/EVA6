@@ -44,8 +44,8 @@ class cifar10:
     def tranforms(self):
         return self._transform
     @tranforms.setter
-    def tranforms(self,tranforms_):
-        self._tranforms = tranforms_
+    def tranforms(self,tranforms):
+        self._tranforms = tranforms
     
     
     
