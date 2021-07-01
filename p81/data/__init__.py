@@ -7,7 +7,7 @@ Created on Wed Jun 30 22:19:56 2021
 """
 import torch
 from .cifar10 import cifar10
-from .transformations import train_transform_list
+from .transformations import train_transform_list,test_transform_list
 
 def train_data(dataset : str,batch_size : int,shuffle : bool,
                dataloader_kwargs : dict = None)->"dataloader_obj":
@@ -27,8 +27,7 @@ def train_data(dataset : str,batch_size : int,shuffle : bool,
     batch_size=batch_size, shuffle=shuffle, **dataloader_kwargs)
     return train_loader
 
-def test_data(test_transforms_list : "Transform_object",
-               dataset : str,batch_size : int,shuffle : bool,
+def test_data(dataset : str,batch_size : int,shuffle : bool,
                dataloader_kwargs : dict = None)->"dataloader_obj":
     """
     Function which returns the dataloader object according to the dataset
@@ -84,6 +83,7 @@ def test_dataset(dataset : str,
     if dataset == "CIFAR10":
         ts_dataset = cifar10(root_dir, train=False,
                                         download=True)
+        ts_dataset.transforms = test_transform_list(ts_dataset.mean,ts_dataset.std_dev)
     else:
         raise(ValueError("Refer doc string for available Datasets"))
     return ts_dataset
