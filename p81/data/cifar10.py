@@ -43,7 +43,7 @@ class cifar10:
     @property
     def transforms(self):
         return self._transform
-    @tranforms.setter
+    @transforms.setter
     def transforms(self,transforms):
         self._transform = transforms
     
