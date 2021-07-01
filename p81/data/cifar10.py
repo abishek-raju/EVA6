@@ -25,8 +25,8 @@ class cifar10:
 
     def __getitem__(self,index):
         image, label = self.cifar_[index]
-        if self._transform:
-            return self._transform(image = np.asarray(image))["image"],label
+        if self.tranforms:
+            return self.tranforms(image = np.asarray(image))["image"],label
         else:
             return image,label
     def __len__(self):
@@ -35,16 +35,10 @@ class cifar10:
     @property
     def mean(self):
         return self.cifar_.data.mean(axis=(0,1,2))/255
-    @mean.setter
-    def mean(self,mean_):
-        self._mean = mean_
     
     @property
     def std_dev(self):
         return self.cifar_.data.std(axis=(0,1,2))/255
-    @std_dev.setter
-    def std_dev(self,std_dev_):
-        self._std_dev = std_dev_
     
     @property
     def tranforms(self):
