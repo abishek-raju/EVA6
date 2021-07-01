@@ -7,18 +7,21 @@ Created on Thu Jul  1 19:49:24 2021
 """
 
 
-from .data import train_data,test_data
+from .data import train_dataloader_obj,test_dataloader_obj
 from .models import resnet
 
 
 
-import argparse
 
 
-
-
-#if __name__ == "__main__":
-#    parser = argparse.ArgumentParser()
-#    parser.add_argument('-model', '--model', required = True,default=False) 
-#    parsed = parser.parse_args()
-#    print(vars(parsed))
+def main(config_json):
+    train_data = train_dataloader_obj(dataset = config_json["dataset"],
+                                      batch_size = config_json["tr_batch_size"],
+                                      dataloader_kwargs = config_json["dev_kwargs"])
+    
+    test_data = test_dataloader_obj(dataset = config_json["dataset"],
+                                      batch_size = config_json["tst_batch_size"],
+                                      dataloader_kwargs = config_json["dev_kwargs"])
+    
+    net = resnet.ResNet18()
+    print(net)
