@@ -29,6 +29,9 @@ def main(config_json):
 #    print(net)
     model = net.to(config_json["device"])
     
+    lambda_l1 = 0
+    lambda_l2 = 0
+    
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
     scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
     train_loss = []
@@ -36,9 +39,6 @@ def main(config_json):
     
     train_accuracy = []
     test_accuracy = []
-    
-    lambda_l1 = 0
-    lambda_l2 = 0
     
     for epoch in range(1, 100):
 
