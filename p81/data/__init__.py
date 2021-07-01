@@ -7,7 +7,7 @@ Created on Wed Jun 30 22:19:56 2021
 """
 import torch
 from .cifar10 import cifar10
-from .transformations import train_transform_list,test_transform_list
+from ..utils.transformations import train_transform_list,test_transform_list
 
 def train_data(dataset : str,batch_size : int,shuffle : bool,
                dataloader_kwargs : dict = None)->"dataloader_obj":
