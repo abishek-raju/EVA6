@@ -11,7 +11,7 @@ from .data import train_dataloader_obj,test_dataloader_obj
 from .models import resnet
 from .training import training,testing
 from .logs import logger
-from .utils import get_misclassified_images,get_classified_images
+from .utils import get_misclassified_images
 
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.optim as optim
