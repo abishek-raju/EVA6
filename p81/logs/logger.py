@@ -19,6 +19,12 @@ class log_training_params:
 
         self._misclassified_grid_image = None
         
+        self._classified_images = []
+        self._classified_labels = []
+        self._classified_preds = []
+
+        self._classified_grid_image = None
+        
         self.writer = SummaryWriter(tensorboard_root+exp_name)
     @property
     def train_test_loss(self):
@@ -68,7 +74,7 @@ class log_training_params:
     @property
     def misclassified_grid_image(self):
         return self._misclassified_grid_image 
-    @misclassified_grid_image .setter
+    @misclassified_grid_image.setter
     def misclassified_grid_image(self, img : "image"):
         self._misclassified_grid_image = img
         self.writer.add_image("Misclassified Images", img)
@@ -93,11 +99,25 @@ class log_training_params:
 #            self._misclassified_labels.append(misclassified[1][:max_threshold])
 #            self._misclassified_preds.append(misclassified[2][:max_threshold])
     
+    @property
+    def classified_images(self):
+        return (self._classified_images,
+        self._classified_labels,
+        self._classified_preds)
+    @classified_images.setter
+    def classified_images(self, classified : "image,label,preds"):
+        self._classified_images = classified[0]
+        self._classified_labels = classified[1]
+        self._classified_preds = classified[2]
+        self.classified_grid_image = fig2img(image_grid(self._classified_images,self._classified_labels,self._classified_preds))
         
-        
-        
-        
-        
-        
+    @property
+    def classified_grid_image(self):
+        return self._classified_grid_image 
+    @classified_grid_image.setter
+    def classified_grid_image(self, img : "image"):
+        self._classified_grid_image = img
+        self.writer.add_image("Correctly Classified Images", img)
+        self.flush()
         
         

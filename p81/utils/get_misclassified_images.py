@@ -30,6 +30,44 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
                 break
     return misclassified_images[:max_misclassified_images],misclassified_labels[:max_misclassified_images],misclassified_preds[:max_misclassified_images]
 
+
+def get_classified_images(max_classified_images,test_loader,class_names,device,model):
+    dataiter = iter(test_loader)
+    # X_train, y_train = dataiter.next()
+    
+    classified_images = []
+    classified_labels = []
+    classified_preds = []
+    
+    model.eval()
+    with torch.no_grad():
+        for data, target in dataiter:
+            data, target = data.to(device), target.to(device)
+            output = model(data)
+            if len(classified_images) < max_classified_images:
+                classified_images = classified_images + list(data[output.argmax(dim = 1) == target])
+                classified_labels = classified_labels + list(target[output.argmax(dim = 1) == target])
+                classified_preds = classified_preds + list(output[output.argmax(dim = 1) == target].argmax(dim = 1))
+            else:
+                break
+    return classified_images[:max_classified_images],classified_labels[:max_classified_images],classified_preds[:max_classified_images]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def image_grid(misclassified_images,misclassified_labels,misclassified_preds):  
     figure = plt.figure(figsize=(12,8))
     rows,rem = divmod(len(misclassified_images),5)
