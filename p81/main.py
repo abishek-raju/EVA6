@@ -32,10 +32,10 @@ def main(config_json):
     net = resnet.ResNet18()
 #    print(net)
     model = net.to(config_json["device"])
-    metric_log.add_torch_summary(model, input_size=(3, 32, 32))
+    metric_log.add_torch_summary = summary(model, input_size=(3, 32, 32))
     dataiter = iter(train_loader)
     images, labels = dataiter.next()
-    metric_log.add_graph(model, images,device)
+    metric_log.add_graph = (model, images,device)
     
     lambda_l1 = 0
     lambda_l2 = 0

@@ -147,7 +147,8 @@ class log_training_params:
     def add_graph(self):
         return self._add_graph
     @add_graph.setter
-    def add_graph(self, graph : "graph",images : "images" ,device : "device"):
-        self._add_graph = graph
+    def add_graph(self, data : "model,images,device"):
+        model, images, device = data
+        self._add_graph = model
         self.writer.add_graph(model, images.to(device))
         self.flush()
