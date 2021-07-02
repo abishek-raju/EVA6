@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from torch.utils.tensorboard import SummaryWriter
 from ..utils.get_misclassified_images import fig2img,image_grid
+import json
 
 class log_training_params:
     def __init__(self,exp_name : str = "Experiment_1",max_misclassified_images : int = 20,
@@ -128,5 +129,5 @@ class log_training_params:
     @add_text.setter
     def add_text(self, text : str):
         self._add_text = text
-        self.writer.add_text("Config_json", str(text))
+        self.writer.add_text("Config_json", json.dumps(text, sort_keys=True, indent=4))
         self.flush()
