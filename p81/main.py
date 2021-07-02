@@ -10,6 +10,7 @@ Created on Thu Jul  1 19:49:24 2021
 from .data import train_dataloader_obj,test_dataloader_obj
 from .models import resnet
 from .training import training,testing
+from .logs import logger
 
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.optim as optim
@@ -35,12 +36,12 @@ def main(config_json):
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
     scheduler = ReduceLROnPlateau(optimizer)
-    train_loss = []
-    test_loss = []
-    
-    train_accuracy = []
-    test_accuracy = []
-    
+#    train_loss = []
+#    test_loss = []
+#    
+#    train_accuracy = []
+#    test_accuracy = []
+    metric_log = logger.log_training_params()
     for epoch in range(1, config_json["epochs"]):
 
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
@@ -48,8 +49,8 @@ def main(config_json):
         
         scheduler.step(tst_loss)
         
-        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
-        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
+#        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
+#        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
         print("Train_epoch : ",100*tr_acc.item())
         print("Test_epoch : ",100*tst_acc.item())
         print("Learning Rate : ",optimizer.param_groups[0]['lr'])
@@ -65,7 +66,9 @@ def main(config_json):
 #    },epoch)
 #    writer.flush()
 
-
+        metric_log.train_test_loss = tr_loss,tst_loss,epoch
+        metric_log.train_test_accuracy = tr_acc,tst_acc,epoch
+        metric_log.flush()
 
 
 
