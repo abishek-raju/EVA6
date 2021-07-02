@@ -4,12 +4,12 @@ import io
 import matplotlib.pyplot as plt
 from PIL import Image
 import torchvision.transforms as transforms
+import torch
 
 
 
 
-
-def get_misclassified_images(max_misclassified_images,test_loader,class_names,device):
+def get_misclassified_images(max_misclassified_images,test_loader,class_names,device,model):
     dataiter = iter(test_loader)
     # X_train, y_train = dataiter.next()
     
