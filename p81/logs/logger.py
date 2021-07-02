@@ -26,7 +26,9 @@ class log_training_params:
 
         self._classified_grid_image = None
         
+        
         self._add_text = None
+        self._add_torch_summary = None
         
         self.writer = SummaryWriter(tensorboard_root+exp_name)
     @property
@@ -130,4 +132,22 @@ class log_training_params:
     def add_text(self, text : str):
         self._add_text = text
         self.writer.add_text("Config_json", json.dumps(text, sort_keys=True, indent=4))
+        self.flush()
+    
+    @property
+    def add_torch_summary(self):
+        return self._add_torch_summary
+    @add_torch_summary.setter
+    def add_torch_summary(self, text : str):
+        self._add_torch_summary = str(text)
+        self.writer.add_text("Add_torch_Summary", str(text))
+        self.flush()
+    
+    @property
+    def add_graph(self):
+        return self._add_graph
+    @add_graph.setter
+    def add_graph(self, graph : "graph",images : "images" ,device : "device"):
+        self._add_graph = graph
+        self.writer.add_graph(model, images.to(device))
         self.flush()
