@@ -32,9 +32,11 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
 
 def image_grid(misclassified_images,misclassified_labels,misclassified_preds):  
     figure = plt.figure(figsize=(12,8))
-
-    for i in range(25):    
-        plt.subplot(5, 5, i + 1)
+    rows,rem = divmod(misclassified_images,5)
+    if rem > 0:
+        rows = rows + 1
+    for i in range(len(misclassified_images)):    
+        plt.subplot(rows, 5, i + 1)
         plt.xlabel("Pred : "+str(misclassified_preds[i].item())+"    Truth : "+str(misclassified_labels[i].item()))
         plt.xticks([])
         plt.yticks([])
