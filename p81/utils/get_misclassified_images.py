@@ -22,7 +22,7 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
         for data, target in dataiter:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            if len(misclassified_images) < max_misclassified_images:
+            if len(misclassified_images) <= max_misclassified_images:
                 misclassified_images = misclassified_images + list(data[output.argmax(dim = 1) != target])
                 misclassified_labels = misclassified_labels + list(target[output.argmax(dim = 1) != target])
                 misclassified_preds = misclassified_preds + list(output[output.argmax(dim = 1) != target].argmax(dim = 1))
@@ -44,7 +44,7 @@ def get_classified_images(max_classified_images,test_loader,class_names,device,m
         for data, target in dataiter:
             data, target = data.to(device), target.to(device)
             output = model(data)
-            if len(classified_images) < max_classified_images:
+            if len(classified_images) <= max_classified_images:
                 classified_images = classified_images + list(data[output.argmax(dim = 1) == target])
                 classified_labels = classified_labels + list(target[output.argmax(dim = 1) == target])
                 classified_preds = classified_preds + list(output[output.argmax(dim = 1) == target].argmax(dim = 1))
