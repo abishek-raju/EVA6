@@ -19,6 +19,8 @@ import torch.nn.functional as F
 import torch.nn as nn
 
 def main(config_json):
+    metric_log = logger.log_training_params()
+    metric_log.add_text = config_json
     train_loader = train_dataloader_obj(dataset = config_json["dataset"],
                                       batch_size = config_json["tr_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
@@ -42,7 +44,7 @@ def main(config_json):
 #    
 #    train_accuracy = []
 #    test_accuracy = []
-    metric_log = logger.log_training_params()
+    
     for epoch in range(1, config_json["epochs"]):
 
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)

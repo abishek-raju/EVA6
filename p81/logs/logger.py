@@ -25,6 +25,8 @@ class log_training_params:
 
         self._classified_grid_image = None
         
+        self._add_text = None
+        
         self.writer = SummaryWriter(tensorboard_root+exp_name)
     @property
     def train_test_loss(self):
@@ -120,4 +122,11 @@ class log_training_params:
         self.writer.add_image("Correctly Classified Images", img)
         self.flush()
         
-        
+    @property
+    def add_text(self):
+        return self._add_text
+    @add_text.setter
+    def add_text(self, text : str):
+        self._add_text = text
+        self.writer.add_text("Config_json", text)
+        self.flush()
