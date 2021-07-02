@@ -88,7 +88,7 @@ def main(config_json):
                                                   config_json["device"],
                                                   model)
 
-
+    return model
 
 
 
