@@ -11,6 +11,7 @@ from .data import train_dataloader_obj,test_dataloader_obj
 from .models import resnet
 from .training import training,testing
 from .logs import logger
+from .utils import get_misclassified_images,image_grid,fig2img
 
 from torch.optim.lr_scheduler import ReduceLROnPlateau
 import torch.optim as optim
@@ -69,7 +70,11 @@ def main(config_json):
         metric_log.train_test_loss = tr_loss,tst_loss,epoch
         metric_log.train_test_accuracy = tr_acc,tst_acc,epoch
         metric_log.flush()
-
+    
+    metric_log.misclassified_images = get_misclassified_images.get_misclassified_images(config_json["max_misclassified_images"],
+                                                      test_loader,
+                                                      train_loader.dataset.cifar_.classes,
+                                                      config_json["device"])
 
 
 

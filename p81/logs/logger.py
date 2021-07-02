@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from torch.utils.tensorboard import SummaryWriter
-
+from ..utils.transformations import fig2img,image_grid
 
 class log_training_params:
     def __init__(self,exp_name : str = "Experiment_1",max_misclassified_images : int = 20,
@@ -12,6 +12,13 @@ class log_training_params:
         self._test_loss = []
         self._train_accuracy = []
         self._test_accuracy = []
+        
+        self._misclassified_images = []
+        self._misclassified_labels = []
+        self._misclassified_preds = []
+
+        self._misclassified_grid_image = None
+        
         self.writer = SummaryWriter(tensorboard_root+exp_name)
     @property
     def train_test_loss(self):
@@ -41,3 +48,56 @@ class log_training_params:
     
     def flush(self):
         self.writer.flush()
+    
+    @property
+    def misclassified_len(self):
+        return len(self._misclassified_images)
+    
+    @property
+    def misclassified_images(self):
+        return (self._misclassified_images,
+        self._misclassified_labels,
+        self._misclassified_preds)
+    @misclassified_images.setter
+    def misclassified_images(self, misclassified : "image,label,preds"):
+        self._misclassified_images = misclassified[0]
+        self._misclassified_labels = misclassified[1]
+        self._misclassified_preds = misclassified[2]
+        self.misclassified_grid_image = fig2img(image_grid(self._misclassified_images,self._misclassified_labels,self._misclassified_preds))
+        
+    @property
+    def misclassified_grid_image(self):
+        return self._misclassified_grid_image 
+    @misclassified_grid_image .setter
+    def misclassified_grid_image(self, img : "image"):
+        self._misclassified_grid_image = img
+        self.writer.add_image("Misclassified Images", img)
+        self.flush()
+#    @property
+#    def misclassified_len(self):
+#        return len(self._misclassified_images)
+#    
+#    @property
+#    def misclassified_images(self):
+#        return (self._misclassified_images,
+#        self._misclassified_labels,
+#        self._misclassified_preds)
+#    @misclassified_images.setter
+#    def misclassified_images(self, misclassified : "image,label,preds"):
+#        if self.misclassified_len < self.max_misclassified_images:
+#            if len(misclassified[0]) < (self.max_misclassified_images - self.misclassified_len):
+#                max_threshold = len(misclassified[0]) - 1
+#            else:
+#                max_threshold = (self.max_misclassified_images - self.misclassified_len)
+#            self._misclassified_images.append(misclassified[0][:max_threshold])
+#            self._misclassified_labels.append(misclassified[1][:max_threshold])
+#            self._misclassified_preds.append(misclassified[2][:max_threshold])
+    
+        
+        
+        
+        
+        
+        
+        
+        
