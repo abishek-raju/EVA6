@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from torch.utils.tensorboard import SummaryWriter
-from ..utils.transformations import fig2img,image_grid
+from ..utils.get_misclassified_images import fig2img,image_grid
 
 class log_training_params:
     def __init__(self,exp_name : str = "Experiment_1",max_misclassified_images : int = 20,
