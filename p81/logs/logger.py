@@ -128,5 +128,5 @@ class log_training_params:
     @add_text.setter
     def add_text(self, text : str):
         self._add_text = text
-        self.writer.add_text("Config_json", text)
+        self.writer.add_text("Config_json", str(text))
         self.flush()
