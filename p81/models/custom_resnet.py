@@ -72,10 +72,7 @@ class Custom_Resnet(nn.Module):
         
         self.linear_out = nn.Sequential(
             nn.Linear(512, 256),
-            nn.Linear(256, 128),
-            nn.Linear(128, 56),
-            nn.Linear(56, 28),
-            nn.Linear(28, 10)
+            nn.Linear(256, 10)
             )
 
     def forward(self, x):
