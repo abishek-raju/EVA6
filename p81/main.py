@@ -13,7 +13,7 @@ from .training import training,testing
 from .logs import logger
 from .utils import get_misclassified_images
 
-from torch.optim.lr_scheduler import ReduceLROnPlateau
+from torch.optim.lr_scheduler import OneCycleLR
 import torch.optim as optim
 import torch.nn.functional as F
 import torch.nn as nn
@@ -40,9 +40,10 @@ def main(config_json):
     lambda_l1 = 0
     lambda_l2 = 0
     
-    optimizer = optim.SGD(model.parameters(), lr=0.9, momentum=0.9, weight_decay = lambda_l2)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
-    scheduler = ReduceLROnPlateau(optimizer)
+#    scheduler = ReduceLROnPlateau(optimizer)
+    scheduler = OneCycleLR()
 #    train_loss = []
 #    test_loss = []
 #    
