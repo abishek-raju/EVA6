@@ -70,5 +70,5 @@ class CustomResnet(nn.Module):
         return F.softmax(out, dim=-1)
 
 
-def customResnet():
+def Custom_Resnet():
     return CustomResnet(BasicBlock, [1, 1, 1])
