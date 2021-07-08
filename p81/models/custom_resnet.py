@@ -1,106 +1,74 @@
-# -*- coding: utf-8 -*-
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-def normalization_technique(normalization,in_channels):
-    if normalization == "GN":
-        return nn.GroupNorm(2,in_channels)
-    elif normalization == "LN":
-        return nn.GroupNorm(1,in_channels)
-    else:
-        return nn.BatchNorm2d(in_channels)
 
 
 class BasicBlock(nn.Module):
     expansion = 1
 
-    def __init__(self, in_planes, planes, stride=1):
+    def __init__(self, in_planes, planes, stride=1, resblock=True):
         super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(
-            in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
-                               stride=1, padding=1, bias=False)
-        self.bn2 = nn.BatchNorm2d(planes)
 
-        self.shortcut = nn.Sequential()
-        if stride != 1 or in_planes != self.expansion*planes:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, self.expansion*planes,
-                          kernel_size=1, stride=stride, bias=False),
-                nn.BatchNorm2d(self.expansion*planes)
-            )
+        self.has_resblock = resblock
+
+        self.conv = nn.Conv2d(in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
+        self.mp = nn.MaxPool2d(2, 2)
+        self.bn = nn.BatchNorm2d(planes)
+
+        if self.has_resblock:
+            self.conv1 = nn.Conv2d(
+                planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
+            self.bn1 = nn.BatchNorm2d(planes)
+            self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
+                                   stride=1, padding=1, bias=False)
+            self.bn2 = nn.BatchNorm2d(planes)
+
+            self.shortcut = nn.Sequential()
+
+    def forward(self, x):
+        x = F.relu(self.bn(self.mp(self.conv(x))))
+        if self.has_resblock:
+            out = F.relu(self.bn1(self.conv1(x)))
+            out = F.relu(self.bn2(self.conv2(out)))
+            r1 = out + self.shortcut(x)  # This is the residual block
+            return x + r1
+        else:
+            return x
+
+
+class CustomResnet(nn.Module):
+    def __init__(self, block, num_blocks, num_classes=10):
+        super(MyResNet, self).__init__()
+        self.in_planes = 64
+
+        self.conv1 = nn.Conv2d(3, 64, kernel_size=3,
+                               stride=1, padding=1, bias=False)
+        self.bn1 = nn.BatchNorm2d(64)
+
+        self.layer1 = self._make_layer(block, 128, num_blocks[0], stride=1)
+        self.layer2 = self._make_layer(block, 256, num_blocks[1], stride=1, resblock=False)
+        self.layer3 = self._make_layer(block, 512, num_blocks[2], stride=1)
+        self.linear = nn.Linear(512 * block.expansion, num_classes)
+
+    def _make_layer(self, block, planes, num_blocks, stride, resblock=True):
+        strides = [stride] + [1] * (num_blocks - 1)
+        layers = []
+        for stride in strides:
+            layers.append(block(self.in_planes, planes, stride, resblock))
+            self.in_planes = planes * block.expansion
+        return nn.Sequential(*layers)
 
     def forward(self, x):
         out = F.relu(self.bn1(self.conv1(x)))
-        out = self.bn2(self.conv2(out))
-        out += x
-        out = F.relu(out)
-        return out
+        out = self.layer1(out)
+        out = self.layer2(out)
+        out = self.layer3(out)
+        out = F.max_pool2d(out, 4, 1)
+
+        out = out.view(out.size(0), -1)
+        out = self.linear(out)
+        return F.softmax(out, dim=-1)
 
 
-class Custom_Resnet(nn.Module):
-    def __init__(self ,norm_type : "BN/LN/GN" = "BN"):
-        super(Custom_Resnet, self).__init__()
-        self.preplayer = nn.Sequential(
-            nn.Conv2d(in_channels=3, out_channels=64, kernel_size=3,padding = 1),
-            normalization_technique(norm_type,64),
-            nn.ReLU(),
-        )
-        self.layer_1 = nn.Sequential(
-            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=3,padding = 1),
-            nn.MaxPool2d(2, 2),
-            normalization_technique(norm_type,128),
-            nn.ReLU()
-        )
-        self.r1 = self._make_layer(BasicBlock, 128, 128,1, stride=1)
-        self.layer_2 = nn.Sequential(
-            nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3,padding = 1),
-            nn.MaxPool2d(2, 2),
-            normalization_technique(norm_type,256),
-            nn.ReLU()
-        )
-        self.layer_3 = nn.Sequential(
-            nn.Conv2d(in_channels=256, out_channels=512, kernel_size=3,padding = 1),
-            nn.MaxPool2d(2, 2),
-            normalization_technique(norm_type,512),
-            nn.ReLU()
-        )
-        self.r2 = self._make_layer(BasicBlock, 512, 512,1, stride=1)
-
-        self.pool = nn.MaxPool2d(4,4)
-        
-        self.linear_out = nn.Sequential(
-            nn.Linear(512, 10),
-            nn.ReLU()
-            )
-
-
-    def _make_layer(self, block,in_planes, planes, num_blocks, stride):
-        strides = [stride] + [1]*(num_blocks-1)
-        layers = []
-        for stride in strides:
-            layers.append(block(in_planes, planes, stride))
-            in_planes = planes * block.expansion
-        return nn.Sequential(*layers)
-
-
-
-    def forward(self, x):
-        x = self.preplayer(x)
-
-        x = self.layer_1(x)
-        x = self.r1(x) + x
-
-        x = self.layer_2(x)
-
-        x = self.layer_3(x)
-        x = self.r2(x) + x
-
-        x = self.pool(x)
-
-        x = x.view(-1,512)
-        
-        x = self.linear_out(x)
-        x = F.softmax(x,dim=-1)
-        return x
+def customResnet():
+    return CustomResnet(BasicBlock, [1, 1, 1])
