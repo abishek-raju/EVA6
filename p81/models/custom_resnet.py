@@ -70,7 +70,13 @@ class Custom_Resnet(nn.Module):
 
         self.pool = nn.MaxPool2d(4,4)
         
-        self.linear = nn.Linear(512, 10)
+        self.linear_out = nn.Sequential(
+            nn.Linear(512, 256),
+            nn.Linear(256, 128),
+            nn.Linear(128, 56),
+            nn.Linear(56, 28),
+            nn.Linear(28, 10)
+            )
 
     def forward(self, x):
         x = self.preplayer(x)
@@ -87,6 +93,6 @@ class Custom_Resnet(nn.Module):
 
         x = x.view(x.size(0), -1)
         
-        x = self.linear(x)
+        x = self.linear_out(x)
         x = F.softmax(x,dim=1)
         return x
