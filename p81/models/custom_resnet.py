@@ -91,7 +91,7 @@ class Custom_Resnet(nn.Module):
 
         x = self.pool(x)
 
-        x = x.view(x.size(0), -1)
+        x = x.view(-1,512)
         
         x = self.linear_out(x)
         x = F.softmax(x,dim=-1)
