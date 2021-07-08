@@ -8,7 +8,7 @@ Created on Thu Jul  1 19:49:24 2021
 
 
 from .data import train_dataloader_obj,test_dataloader_obj
-from .models import resnet
+from .models import custom_resnet
 from .training import training,testing
 from .logs import logger
 from .utils import get_misclassified_images
@@ -29,7 +29,7 @@ def main(config_json):
                                       batch_size = config_json["tst_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
     
-    net = resnet.ResNet18()
+    net = custom_resnet.Custom_Resnet()
 #    print(net)
     model = net.to(config_json["device"])
     metric_log.add_torch_summary = summary(model, input_size=(3, 32, 32))
