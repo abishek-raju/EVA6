@@ -43,7 +43,7 @@ def main(config_json):
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
-    scheduler = OneCycleLR()
+    scheduler = OneCycleLR(optimizer,5)
 #    train_loss = []
 #    test_loss = []
 #    
