@@ -27,7 +27,7 @@ class BasicBlock(nn.Module):
         if stride != 1 or in_planes != self.expansion*planes:
             self.shortcut = nn.Sequential(
                 nn.Conv2d(in_planes, self.expansion*planes,
-                          kernel_size=1, stride=stride, bias=False),
+                          kernel_size=1, stride=1, bias=False),
                 nn.GroupNorm(1,self.expansion*planes)
             )
 
@@ -53,7 +53,7 @@ class Custom_Resnet(nn.Module):
             normalization_technique(norm_type,128),
             nn.ReLU()
         )
-        self.r1 = self._make_layer(BasicBlock, 128, 128,1, stride=1)
+        self.r1 = self._make_layer(BasicBlock, 128, 128,1, stride=2)
         self.layer_2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3,padding = 1),
             nn.MaxPool2d(2, 2),
@@ -66,7 +66,7 @@ class Custom_Resnet(nn.Module):
             normalization_technique(norm_type,512),
             nn.ReLU()
         )
-        self.r2 = self._make_layer(BasicBlock, 512, 512,1, stride=1)
+        self.r2 = self._make_layer(BasicBlock, 512, 512,1, stride=2)
 
         self.pool = nn.MaxPool2d(4,4)
         
