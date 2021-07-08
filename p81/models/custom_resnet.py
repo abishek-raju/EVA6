@@ -53,7 +53,7 @@ class Custom_Resnet(nn.Module):
             normalization_technique(norm_type,128),
             nn.ReLU()
         )
-        self.r1 = BasicBlock(128,128)
+        self.r1 = self._make_layer(BasicBlock, 128, 256, stride=2)
         self.layer_2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3,padding = 1),
             nn.MaxPool2d(2, 2),
@@ -74,6 +74,17 @@ class Custom_Resnet(nn.Module):
             nn.Linear(512, 10),
             nn.ReLU()
             )
+
+
+    def _make_layer(self, block,in_planes, planes, num_blocks, stride):
+        strides = [stride] + [1]*(num_blocks-1)
+        layers = []
+        for stride in strides:
+            layers.append(block(in_planes, planes, stride))
+            in_planes = planes * block.expansion
+        return nn.Sequential(*layers)
+
+
 
     def forward(self, x):
         x = self.preplayer(x)
