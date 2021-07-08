@@ -71,7 +71,8 @@ class Custom_Resnet(nn.Module):
         self.pool = nn.MaxPool2d(4,4)
         
         self.linear_out = nn.Sequential(
-            nn.Linear(512, 10)
+            nn.Linear(512, 10),
+            nn.ReLU()
             )
 
     def forward(self, x):
