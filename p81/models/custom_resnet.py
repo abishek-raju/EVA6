@@ -53,7 +53,7 @@ class Custom_Resnet(nn.Module):
             normalization_technique(norm_type,128),
             nn.ReLU()
         )
-        self.r1 = self._make_layer(BasicBlock, 128, 256,1, stride=1)
+        self.r1 = self._make_layer(BasicBlock, 128, 128,1, stride=1)
         self.layer_2 = nn.Sequential(
             nn.Conv2d(in_channels=128, out_channels=256, kernel_size=3,padding = 1),
             nn.MaxPool2d(2, 2),
