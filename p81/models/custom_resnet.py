@@ -1,88 +1,53 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Thu Jul  1 16:49:12 2021
-
-@author: rampfire
-"""
-
-
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class BasicBlock(nn.Module):
-    expansion = 1
-
-    def __init__(self, in_planes, planes, stride=1):
-        super(BasicBlock, self).__init__()
-        self.conv1 = nn.Conv2d(
-            in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.bn1 = nn.GroupNorm(1,planes)
-        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
-                               stride=1, padding=1, bias=False)
-        self.bn2 = nn.GroupNorm(1,planes)
-
-        self.shortcut = nn.Sequential()
-        if stride != 1 or in_planes != self.expansion*planes:
-            self.shortcut = nn.Sequential(
-                nn.Conv2d(in_planes, self.expansion*planes,
-                          kernel_size=1, stride=stride, bias=False),
-                nn.GroupNorm(1,self.expansion*planes)
-            )
-
-    def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.bn2(self.conv2(out))
-        out += self.shortcut(x)
-        out = F.relu(out)
-        return out
+class Custom_Resnet(nn.Module):
 
 
+    def ResBlock(self, in_features, out_features, pading=1):
+      # convolution
+      layers = []
+      layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU(),
+                nn.Conv2d(out_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU()]
+      return nn.Sequential(*layers)
 
-
-
-class ResNet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=10):
-        super(ResNet, self).__init__()
-        self.in_planes = 64
-
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3,
-                               stride=1, padding=1, bias=False)
-        self.bn1 = nn.GroupNorm(1,64)
-        self.layer1 = self._make_layer(block, 64, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(block, 128, num_blocks[1], stride=2)
-        self.layer3 = self._make_layer(block, 256, num_blocks[2], stride=2)
-        self.layer4 = self._make_layer(block, 512, num_blocks[3], stride=2)
-        self.linear = nn.Linear(512*block.expansion, num_classes)
-
-    def _make_layer(self, block, planes, num_blocks, stride):
-        strides = [stride] + [1]*(num_blocks-1)
+    def max_pool_block(self, in_features, out_features, pading=1):
         layers = []
-        for stride in strides:
-            layers.append(block(self.in_planes, planes, stride))
-            self.in_planes = planes * block.expansion
+        layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False), nn.MaxPool2d(2,2), nn.BatchNorm2d(out_features), nn.ReLU()]
         return nn.Sequential(*layers)
 
+
+    def __init__(self):
+        super(Custom_Resnet, self).__init__()
+        self.convblock0 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
+        self.pool1 = self.max_pool_block(64,128)  #19
+        self.convblock1 = self.ResBlock(128,128) #19
+        self.pool2 = self.max_pool_block(128,256)  #9   
+        self.pool3 = self.max_pool_block(256,512)  #4             
+        self.convblock2 = self.ResBlock(512,512) #4
+        
+
+        # self.gap = nn.Sequential(nn.AvgPool2d(kernel_size=4)) # output_size = 1
+        self.max_pool = nn.MaxPool2d(4,4)
+        self.fc1 = nn.Linear(512, 10)
+
     def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.layer1(out)
-        out = self.layer2(out)
-        out = self.layer3(out)
-        out = self.layer4(out)
-        out = F.avg_pool2d(out, 4)
-        out = out.view(out.size(0), -1)
-        out = self.linear(out)
-        return out
+        x = self.convblock0(x)
+        x = self.pool1(x)
+        x1 = self.convblock1(x)
+        x = x+ x1
+        x = self.pool2(x)
+        x = self.pool3(x)
+        x2 = self.convblock2(x)
+        x = x + x2
 
-
-def Custom_Resnet():
-    return ResNet(BasicBlock, [2, 2, 2, 2])
-
-def test():
-    net = Custom_Resnet()
-    y = net(torch.randn(1, 3, 32, 32))
-    print(y.size())
-
-# test()
+        
+        # print(x.shape)
+        # x = self.gap(x)
+        x = self.max_pool(x)
+        # print(x.shape)
+        x = x.view(-1,512)
+        x = self.fc1(x)
+        x = x.view(-1,10)
+        return F.log_softmax(x, dim=-1)
