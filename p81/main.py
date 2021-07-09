@@ -61,7 +61,7 @@ def main(config_json):
     
     lrfinder(model,nn.CrossEntropyLoss(),
                 optim.Adam ,lr = 0.1,device = "cuda",
-                trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98):
+                trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98)
     
     
     
