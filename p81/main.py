@@ -18,6 +18,21 @@ import torch.optim as optim
 import torch.nn.functional as F
 import torch.nn as nn
 from torchsummary import summary
+from torch_lr_finder import LRFinder
+
+def lrfinder(model : "model_obj",criterion : "loss_function" = nn.CrossEntropyLoss(),
+                optimizer : "optim" = optim.Adam ,lr : float = 0.1,device = "cuda",
+                trainloader,val_loader,end_lr = 1,num_iter):
+    """
+    https://pypi.org/project/torch-lr-finder/
+    """
+    optimizer = optimizer(model.parameters(), lr=lr, weight_decay=1e-2)
+    lr_finder = LRFinder(model, optimizer, criterion, device=device)
+    lr_finder.range_test(trainloader, val_loader=val_loader, end_lr=end_lr, num_iter=num_iter, step_mode="linear")
+    lr_finder.plot(log_lr=False)
+    lr_finder.reset()
+    
+    
 def main(config_json):
     metric_log = logger.log_training_params()
     metric_log.add_text = config_json
@@ -43,6 +58,13 @@ def main(config_json):
     optimizer = optim.SGD(model.parameters(), lr=config_json["learning_rate"], momentum=0.9, weight_decay = lambda_l2)
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
+    
+    lrfinder(model,nn.CrossEntropyLoss(),
+                optim.Adam ,lr = 0.1,device = "cuda",
+                trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98):
+    
+    
+    
     scheduler = OneCycleLR(optimizer,0.1,98,config_json["epochs"],5)
 #    train_loss = []
 #    test_loss = []
