@@ -10,7 +10,7 @@ def normalization_technique(normalization,in_channels):
         return nn.BatchNorm2d(in_channels)
 
 class Custom_Resnet(nn.Module):
-    def __init__(self ,norm_type : "BN/LN/GN"):
+    def __init__(self ,norm_type : "BN/LN/GN" = "BN"):
         super(Custom_Resnet, self).__init__()
         self.convblock1 = nn.Sequential(
             nn.Conv2d(in_channels=1, out_channels=8, kernel_size=3),
