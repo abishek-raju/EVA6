@@ -19,7 +19,7 @@ class Custom_Resnet(nn.Module):
 
 
     def __init__(self):
-        super(Net2, self).__init__()
+        super(Custom_Resnet, self).__init__()
         self.convblock0 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
         self.pool1 = self.max_pool_block(64,128)  #19
         self.convblock1 = self.ResBlock(128,128) #19
