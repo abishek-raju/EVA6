@@ -40,7 +40,7 @@ def main(config_json):
     lambda_l1 = 0
     lambda_l2 = 0
     
-    optimizer = optim.SGD(model.parameters(), lr=5, momentum=0.9, weight_decay = lambda_l2)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
     scheduler = ReduceLROnPlateau(optimizer)
 #    scheduler = OneCycleLR(optimizer,5,100)
