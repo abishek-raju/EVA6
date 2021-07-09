@@ -63,7 +63,7 @@ def main(config_json):
 #    scheduler = ReduceLROnPlateau(optimizer)
     
     lrfinder(model,nn.CrossEntropyLoss(),
-                optim.SGD ,lr = 0.01,device = "cuda",
+                optim.SGD ,lr = 0.0001,device = "cuda",
                 trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98)
     
     
