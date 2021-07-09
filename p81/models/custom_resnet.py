@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
-def ResBlock(self, in_planes, planes, pading=1):
+def ResBlock(in_planes, planes, pading=1):
     return nn.Sequential(
     nn.Conv2d(
         in_planes, planes, kernel_size=3, stride=1, padding=1, bias=False),
@@ -11,7 +11,7 @@ def ResBlock(self, in_planes, planes, pading=1):
     nn.GroupNorm(1,planes)
     )
 
-def block(self, in_planes, planes, pading=1):
+def block(in_planes, planes, pading=1):
     return nn.Sequential(
     nn.Conv2d(in_planes, planes, 3, padding=pading, bias=False),
     nn.MaxPool2d(2,2),
