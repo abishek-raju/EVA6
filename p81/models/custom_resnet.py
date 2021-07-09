@@ -11,10 +11,11 @@ def ResBlock(in_planes, planes, pading=1):
     nn.GroupNorm(1,planes)
     )
 
-def block(in_planes, planes, pading=1):
+def block(in_planes, planes, pading=1,max_pool = True):
     return nn.Sequential(
     nn.Conv2d(in_planes, planes, 3, padding=pading, bias=False),
-    nn.MaxPool2d(2,2),
+    [nn.MaxPool2d(2,2) if max_pool else None],
+    
     nn.BatchNorm2d(planes),
     nn.ReLU()
     )
