@@ -1,74 +1,53 @@
-import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
 
-class BasicBlock(nn.Module):
-    expansion = 1
-
-    def __init__(self, in_planes, planes, stride=1, resblock=True):
-        super(BasicBlock, self).__init__()
-
-        self.has_resblock = resblock
-
-        self.conv = nn.Conv2d(in_planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-        self.mp = nn.MaxPool2d(2, 2)
-        self.bn = nn.BatchNorm2d(planes)
-
-        if self.has_resblock:
-            self.conv1 = nn.Conv2d(
-                planes, planes, kernel_size=3, stride=stride, padding=1, bias=False)
-            self.bn1 = nn.BatchNorm2d(planes)
-            self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
-                                   stride=1, padding=1, bias=False)
-            self.bn2 = nn.BatchNorm2d(planes)
-
-            self.shortcut = nn.Sequential()
-
-    def forward(self, x):
-        x = F.relu(self.bn(self.mp(self.conv(x))))
-        if self.has_resblock:
-            out = F.relu(self.bn1(self.conv1(x)))
-            out = F.relu(self.bn2(self.conv2(out)))
-            r1 = out + self.shortcut(x)  # This is the residual block
-            return x + r1
-        else:
-            return x
+class Custom_Resnet(nn.Module):
 
 
-class CustomResnet(nn.Module):
-    def __init__(self, block, num_blocks, num_classes=10):
-        super(CustomResnet, self).__init__()
-        self.in_planes = 64
+    def ResBlock(self, in_features, out_features, pading=1):
+      # convolution
+      layers = []
+      layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU(),
+                nn.Conv2d(out_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU()]
+      return nn.Sequential(*layers)
 
-        self.conv1 = nn.Conv2d(3, 64, kernel_size=3,
-                               stride=1, padding=1, bias=False)
-        self.bn1 = nn.BatchNorm2d(64)
-
-        self.layer1 = self._make_layer(block, 128, num_blocks[0], stride=1)
-        self.layer2 = self._make_layer(block, 256, num_blocks[1], stride=1, resblock=False)
-        self.layer3 = self._make_layer(block, 512, num_blocks[2], stride=1)
-        self.linear = nn.Linear(512 * block.expansion, num_classes)
-
-    def _make_layer(self, block, planes, num_blocks, stride, resblock=True):
-        strides = [stride] + [1] * (num_blocks - 1)
+    def max_pool_block(self, in_features, out_features, pading=1):
         layers = []
-        for stride in strides:
-            layers.append(block(self.in_planes, planes, stride, resblock))
-            self.in_planes = planes * block.expansion
+        layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False), nn.MaxPool2d(2,2), nn.BatchNorm2d(out_features), nn.ReLU()]
         return nn.Sequential(*layers)
 
+
+    def __init__(self):
+        super(Net2, self).__init__()
+        self.convblock0 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
+        self.pool1 = self.max_pool_block(64,128)  #19
+        self.convblock1 = self.ResBlock(128,128) #19
+        self.pool2 = self.max_pool_block(128,256)  #9   
+        self.pool3 = self.max_pool_block(256,512)  #4             
+        self.convblock2 = self.ResBlock(512,512) #4
+        
+
+        # self.gap = nn.Sequential(nn.AvgPool2d(kernel_size=4)) # output_size = 1
+        self.max_pool = nn.MaxPool2d(4,4)
+        self.fc1 = nn.Linear(512, 10)
+
     def forward(self, x):
-        out = F.relu(self.bn1(self.conv1(x)))
-        out = self.layer1(out)
-        out = self.layer2(out)
-        out = self.layer3(out)
-        out = F.max_pool2d(out, 4, 1)
+        x = self.convblock0(x)
+        x = self.pool1(x)
+        x1 = self.convblock1(x)
+        x = x+ x1
+        x = self.pool2(x)
+        x = self.pool3(x)
+        x2 = self.convblock2(x)
+        x = x + x2
 
-        out = out.view(out.size(0), -1)
-        out = self.linear(out)
-        return F.softmax(out, dim=-1)
-
-
-def Custom_Resnet():
-    return CustomResnet(BasicBlock, [1, 1, 1])
+        
+        # print(x.shape)
+        # x = self.gap(x)
+        x = self.max_pool(x)
+        # print(x.shape)
+        x = x.view(-1,512)
+        x = self.fc1(x)
+        x = x.view(-1,10)
+        return F.log_softmax(x, dim=-1)
