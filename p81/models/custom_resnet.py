@@ -1,41 +1,32 @@
 import torch.nn as nn
 import torch.nn.functional as F
 
+def ResBlock(self, in_planes, planes, pading=1):
+    return nn.Sequential(
+    nn.Conv2d(
+        in_planes, planes, kernel_size=3, stride=1, padding=1, bias=False),
+    nn.GroupNorm(1,planes),
+    nn.Conv2d(planes, planes, kernel_size=3,
+                           stride=1, padding=1, bias=False),
+    nn.GroupNorm(1,planes)
+    )
 
+def block(self, in_planes, in_planes, pading=1):
+    return nn.Sequential(
+    nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),
+    nn.MaxPool2d(2,2),
+    nn.BatchNorm2d(out_features),
+    nn.ReLU()
+    )
 class Custom_Resnet(nn.Module):
-
-
-#    def ResBlock(self, in_features, out_features, pading=1):
-#      # convolution
-#      layers = []
-#      layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU(),
-#                nn.Conv2d(out_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU()]
-#      return nn.Sequential(*layers)
-  
-    def ResBlock(self, in_planes, planes, pading=1):
-        return nn.Sequential(
-        nn.Conv2d(
-            in_planes, planes, kernel_size=3, stride=1, padding=1, bias=False),
-        nn.GroupNorm(1,planes),
-        nn.Conv2d(planes, planes, kernel_size=3,
-                               stride=1, padding=1, bias=False),
-        nn.GroupNorm(1,planes)
-        )
-
-    def max_pool_block(self, in_features, out_features, pading=1):
-        layers = []
-        layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False), nn.MaxPool2d(2,2), nn.BatchNorm2d(out_features), nn.ReLU()]
-        return nn.Sequential(*layers)
-
-
     def __init__(self):
         super(Custom_Resnet, self).__init__()
         self.convblock0 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
-        self.pool1 = self.max_pool_block(64,128)  #19
-        self.convblock1 = self.ResBlock(128,128) #19
-        self.pool2 = self.max_pool_block(128,256)  #9   
-        self.pool3 = self.max_pool_block(256,512)  #4             
-        self.convblock2 = self.ResBlock(512,512) #4
+        self.pool1 = block(64,128)  #19
+        self.convblock1 = ResBlock(128,128) #19
+        self.pool2 = block(128,256)  #9   
+        self.pool3 = block(256,512)  #4             
+        self.convblock2 = ResBlock(512,512) #4
         
 
         # self.gap = nn.Sequential(nn.AvgPool2d(kernel_size=4)) # output_size = 1
