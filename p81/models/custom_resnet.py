@@ -11,11 +11,11 @@ def ResBlock(self, in_planes, planes, pading=1):
     nn.GroupNorm(1,planes)
     )
 
-def block(self, in_planes, in_planes, pading=1):
+def block(self, in_planes, planes, pading=1):
     return nn.Sequential(
-    nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),
+    nn.Conv2d(in_planes, planes, 3, padding=pading, bias=False),
     nn.MaxPool2d(2,2),
-    nn.BatchNorm2d(out_features),
+    nn.BatchNorm2d(planes),
     nn.ReLU()
     )
 class Custom_Resnet(nn.Module):
