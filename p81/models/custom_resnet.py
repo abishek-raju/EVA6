@@ -5,12 +5,22 @@ import torch.nn.functional as F
 class Custom_Resnet(nn.Module):
 
 
-    def ResBlock(self, in_features, out_features, pading=1):
-      # convolution
-      layers = []
-      layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU(),
-                nn.Conv2d(out_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU()]
-      return nn.Sequential(*layers)
+#    def ResBlock(self, in_features, out_features, pading=1):
+#      # convolution
+#      layers = []
+#      layers = [nn.Conv2d(in_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU(),
+#                nn.Conv2d(out_features, out_features, 3, padding=pading, bias=False),nn.BatchNorm2d(out_features), nn.ReLU()]
+#      return nn.Sequential(*layers)
+  
+    def ResBlock(self, in_planes, planes, pading=1):
+        return nn.Sequential(
+        self.conv1 = nn.Conv2d(
+            in_planes, planes, kernel_size=3, stride=1, padding=1, bias=False),
+        self.bn1 = nn.GroupNorm(1,planes),
+        self.conv2 = nn.Conv2d(planes, planes, kernel_size=3,
+                               stride=1, padding=1, bias=False),
+        self.bn2 = nn.GroupNorm(1,planes)
+        )
 
     def max_pool_block(self, in_features, out_features, pading=1):
         layers = []
