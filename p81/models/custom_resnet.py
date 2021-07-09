@@ -21,12 +21,12 @@ def block(in_planes, planes, pading=1):
 class Custom_Resnet(nn.Module):
     def __init__(self):
         super(Custom_Resnet, self).__init__()
-        self.convblock0 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
+        self.conv1 = nn.Sequential(nn.Conv2d(3,64, 3, padding=1, bias=False),nn.BatchNorm2d(64), nn.ReLU()) #38
         self.pool1 = block(64,128)  #19
-        self.convblock1 = ResBlock(128,128) #19
+        self.conv2 = ResBlock(128,128) #19
         self.pool2 = block(128,256)  #9   
         self.pool3 = block(256,512)  #4             
-        self.convblock2 = ResBlock(512,512) #4
+        self.conv3 = ResBlock(512,512) #4
         
 
         # self.gap = nn.Sequential(nn.AvgPool2d(kernel_size=4)) # output_size = 1
@@ -34,14 +34,14 @@ class Custom_Resnet(nn.Module):
         self.fc1 = nn.Linear(512, 10)
 
     def forward(self, x):
-        x = self.convblock0(x)
+        x = self.conv1(x)
         x = self.pool1(x)
-        x1 = self.convblock1(x)
-        x = x+ x1
+#        x1 = self.conv2(x)
+        x = x + self.conv2(x)
         x = self.pool2(x)
         x = self.pool3(x)
-        x2 = self.convblock2(x)
-        x = x + x2
+#        x2 = self.conv3(x)
+        x = x + self.conv3(x)
 
         
         # print(x.shape)
