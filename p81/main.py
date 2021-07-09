@@ -22,7 +22,7 @@ from torch_lr_finder import LRFinder
 
 def lrfinder(model : "model_obj",criterion : "loss_function" = nn.CrossEntropyLoss(),
                 optimizer : "optim" = optim.Adam ,lr : float = 0.1,device = "cuda",
-                trainloader,val_loader,end_lr = 1,num_iter):
+                trainloader = None,val_loader = None,end_lr = 1,num_iter = None):
     """
     https://pypi.org/project/torch-lr-finder/
     """
