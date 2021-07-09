@@ -29,11 +29,11 @@ def lrfinder(model : "model_obj",criterion : "loss_function" = nn.CrossEntropyLo
     optimizer = optimizer(model.parameters(), lr=lr, weight_decay=1e-2)
     lr_finder = LRFinder(model, optimizer, criterion, device=device)
     lr_finder.range_test(trainloader, val_loader=val_loader, end_lr=end_lr, num_iter=num_iter, step_mode="linear")
-#    lr_finder.plot(log_lr=False)
-#    lr_finder.reset()
-    lr_finder.unfreeze()
-    lr_finder.lr_find()
-    lr_finder.recorder.plot()
+    lr_finder.plot(log_lr=False)
+    lr_finder.reset()
+#    lr_finder.unfreeze()
+#    lr_finder.lr_find()
+#    lr_finder.recorder.plot()
     
     
 def main(config_json):
@@ -63,7 +63,7 @@ def main(config_json):
 #    scheduler = ReduceLROnPlateau(optimizer)
     
     lrfinder(model,nn.CrossEntropyLoss(),
-                optim.SGD ,lr = 0.1,device = "cuda",
+                optim.SGD ,lr = 0.01,device = "cuda",
                 trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98)
     
     
