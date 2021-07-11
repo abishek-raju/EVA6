@@ -13,7 +13,7 @@ from .training import training,testing
 from .logs import logger
 from .utils import get_misclassified_images
 
-from torch.optim.lr_scheduler import OneCycleLR,ReduceLROnPlateau
+from torch.optim.lr_scheduler import OneCycleLR,ReduceLROnPlateau,StepLR
 import torch.optim as optim
 import torch.nn.functional as F
 import torch.nn as nn
