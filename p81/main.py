@@ -66,12 +66,12 @@ def main(config_json):
                 trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
     
     
-    optimizer = optim.SGD(model.parameters(), lr=0.3, momentum=0.9, weight_decay = lambda_l2)
-#    scheduler = OneCycleLR(optimizer, max_lr=0.008, steps_per_epoch=98,
-#                                                  epochs=24,
-#                                                  pct_start=5/24, 
-#                                                  anneal_strategy='linear')
-    scheduler = StepLR(optimizer, step_size=5, gamma=0.15)
+    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
+    scheduler = OneCycleLR(optimizer, max_lr=0.008, steps_per_epoch=98,
+                                                  epochs=24,
+                                                  pct_start=5/24, 
+                                                  anneal_strategy='linear')
+#    scheduler = StepLR(optimizer, step_size=5, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
 #    train_loss = []
 #    test_loss = []
@@ -84,9 +84,9 @@ def main(config_json):
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
-#        scheduler.step(tr_loss)
+        scheduler.step(tr_loss)
 #        optimizer.step()
-        scheduler.step()
+#        scheduler.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
 #        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
