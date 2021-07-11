@@ -58,7 +58,7 @@ def main(config_json):
     lambda_l1 = 0
     lambda_l2 = 0
     
-    optimizer = optim.SGD(model.parameters(), lr=config_json["learning_rate"], momentum=0.9, weight_decay = lambda_l2)
+    
 #    scheduler = StepLR(optimizer, step_size=70, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
     
@@ -67,7 +67,7 @@ def main(config_json):
                 trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
     
     
-    
+    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay = lambda_l2)
     scheduler = OneCycleLR(optimizer, max_lr=1e-3, steps_per_epoch=98,
                                                   epochs=config_json["epochs"],
                                                   pct_start=5/24, 
