@@ -68,7 +68,7 @@ def main(config_json):
     
     
     optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay = lambda_l2)
-    scheduler = OneCycleLR(optimizer, max_lr=1e-3, steps_per_epoch=98,
+    scheduler = OneCycleLR(optimizer, max_lr=3.5e-2, steps_per_epoch=98,
                                                   epochs=config_json["epochs"],
                                                   pct_start=5/24, 
                                                   anneal_strategy='linear')
