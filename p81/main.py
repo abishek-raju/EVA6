@@ -67,9 +67,9 @@ def main(config_json):
                 trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
     
     
-    optimizer = optim.SGD(model.parameters(), lr=0.01, momentum=0.9, weight_decay = lambda_l2)
+    optimizer = optim.SGD(model.parameters(), lr=0.08, momentum=0.9, weight_decay = lambda_l2)
     scheduler = OneCycleLR(optimizer, max_lr=3.5e-2, steps_per_epoch=98,
-                                                  epochs=config_json["epochs"],
+                                                  epochs=24,
                                                   pct_start=5/24, 
                                                   anneal_strategy='linear')
 #    train_loss = []
