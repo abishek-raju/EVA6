@@ -68,7 +68,10 @@ def main(config_json):
     
     
     
-    scheduler = OneCycleLR(optimizer,0.001,98,config_json["epochs"],1)
+    scheduler = OneCycleLR(optimizer, max_lr=1e-3, steps_per_epoch=98,
+                                                  epochs=config_json["epochs"],
+                                                  pct_start=5/config_json["epochs"], 
+                                                  anneal_strategy='linear')
 #    train_loss = []
 #    test_loss = []
 #    
