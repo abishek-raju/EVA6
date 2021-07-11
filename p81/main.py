@@ -63,12 +63,12 @@ def main(config_json):
 #    scheduler = ReduceLROnPlateau(optimizer)
     
     lrfinder(model,nn.CrossEntropyLoss(),
-                optim.SGD ,lr = 0.0001,device = "cuda",
-                trainloader = train_loader,val_loader = test_loader,end_lr = 1,num_iter = 98)
+                optim.SGD ,lr = 1e-7,device = "cuda",
+                trainloader = train_loader,val_loader = test_loader,end_lr = 50,num_iter = 98)
     
     
     
-    scheduler = OneCycleLR(optimizer,0.0001,98,config_json["epochs"],1)
+    scheduler = OneCycleLR(optimizer,0.001,98,config_json["epochs"],1)
 #    train_loss = []
 #    test_loss = []
 #    
