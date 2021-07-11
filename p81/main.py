@@ -29,7 +29,7 @@ def lrfinder(model : "model_obj",criterion : "loss_function" = nn.CrossEntropyLo
     optimizer = optimizer(model.parameters(), lr=lr, weight_decay=1e-2)
     lr_finder = LRFinder(model, optimizer, criterion, device=device)
     lr_finder.range_test(trainloader, end_lr=end_lr, num_iter=num_iter, step_mode="exp")
-    lr_finder.plot(log_lr=False)
+    lr_finder.plot()
 #    lr_finder.reset()
 #    lr_finder.unfreeze()
 #    lr_finder.lr_find()
