@@ -68,7 +68,7 @@ def main(config_json):
     
     
     
-    scheduler = OneCycleLR(optimizer,0.1,98,config_json["epochs"],5)
+    scheduler = OneCycleLR(optimizer,0.001,98,config_json["epochs"],5)
 #    train_loss = []
 #    test_loss = []
 #    
