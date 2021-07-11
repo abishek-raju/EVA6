@@ -68,10 +68,11 @@ def main(config_json):
     
     
     optimizer = optim.SGD(model.parameters(), lr=0.08, momentum=0.9, weight_decay = lambda_l2)
-    scheduler = OneCycleLR(optimizer, max_lr=3.5e-2, steps_per_epoch=98,
-                                                  epochs=24,
-                                                  pct_start=5/24, 
-                                                  anneal_strategy='linear')
+#    scheduler = OneCycleLR(optimizer, max_lr=3.5e-2, steps_per_epoch=98,
+#                                                  epochs=24,
+#                                                  pct_start=5/24, 
+#                                                  anneal_strategy='linear')
+    
 #    train_loss = []
 #    test_loss = []
 #    
@@ -83,7 +84,8 @@ def main(config_json):
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
-        scheduler.step(tst_loss)
+#        scheduler.step(tst_loss)
+        optimizer.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
 #        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
