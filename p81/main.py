@@ -18,7 +18,7 @@ import torch.optim as optim
 import torch.nn.functional as F
 import torch.nn as nn
 from torchsummary import summary
-from torch_lr_finder import LRFinder
+#from torch_lr_finder import LRFinder
 
 def lrfinder(model : "model_obj",criterion : "loss_function" = nn.CrossEntropyLoss(),
                 optimizer : "optim" = optim.Adam ,lr : float = 0.1,device = "cuda",
