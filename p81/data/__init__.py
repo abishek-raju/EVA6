@@ -54,7 +54,7 @@ def train_dataset(dataset : str,
     
     Params:
         train_transform : Transform's compose object.
-        dataset : MNIST/CIFAR10.
+        dataset : MNIST/CIFAR10/TINY_IMAGENET_200.
         root_dir : path to store data.
     """
     if(type(dataset) != str):
@@ -63,6 +63,9 @@ def train_dataset(dataset : str,
         tr_dataset = cifar10(root_dir, train=True,
                                         download=True)
         tr_dataset.transforms = train_transform_list(tr_dataset.mean,tr_dataset.std_dev)
+    elif dataset == "TINY_IMAGENET_200":
+        tr_dataset = Tiny_image_net_Dataset_200()
+        tr_dataset.transforms = train_transform_list(mean=[0.485, 0.456, 0.406], std_dev=[0.229, 0.224, 0.225])
     else:
         raise(ValueError("Refer doc string for available Datasets"))
     return tr_dataset
@@ -75,7 +78,7 @@ def test_dataset(dataset : str,
     
     Params:
         test_transform : Transform's compose object.
-        dataset : MNIST/CIFAR10.
+        dataset : MNIST/CIFAR10/TINY_IMAGENET_200.
         root_dir : path to store data.
     """
     if(type(dataset) != str):
@@ -84,6 +87,9 @@ def test_dataset(dataset : str,
         ts_dataset = cifar10(root_dir, train=False,
                                         download=True)
         ts_dataset.transforms = test_transform_list(ts_dataset.mean,ts_dataset.std_dev)
+    elif dataset == "TINY_IMAGENET_200":
+        ts_dataset = Tiny_image_net_Dataset_200(tr_tst = "test")
+        ts_dataset.transforms = test_transform_list(mean=[0.485, 0.456, 0.406], std_dev=[0.229, 0.224, 0.225])
     else:
         raise(ValueError("Refer doc string for available Datasets"))
     return ts_dataset

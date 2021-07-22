@@ -8,7 +8,7 @@ Created on Thu Jul  1 19:49:24 2021
 
 
 from .data import train_dataloader_obj,test_dataloader_obj
-from .models import custom_resnet
+from .models import resnet
 from .training import training,testing
 from .logs import logger
 from .utils import get_misclassified_images
@@ -47,10 +47,10 @@ def main(config_json):
                                       batch_size = config_json["tst_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
     
-    net = custom_resnet.Custom_Resnet()
+    net = resnet.ResNet18()
 #    print(net)
     model = net.to(config_json["device"])
-    metric_log.add_torch_summary = summary(model, input_size=(3, 32, 32))
+    metric_log.add_torch_summary = summary(model, input_size=(3, 64, 64))
     dataiter = iter(train_loader)
     images, labels = dataiter.next()
     metric_log.add_graph = (model, images,config_json["device"])
@@ -61,16 +61,16 @@ def main(config_json):
     
 
     
-    lrfinder(model,nn.CrossEntropyLoss(),
-                optim.SGD ,lr = 1e-7,device = "cuda",
-                trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
-    
+#    lrfinder(model,nn.CrossEntropyLoss(),
+#                optim.SGD ,lr = 1e-7,device = "cuda",
+#                trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
+#    
     
     optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
-    scheduler = OneCycleLR(optimizer, max_lr=0.008, steps_per_epoch=98,
-                                                  epochs=24,
-                                                  pct_start=5/24, 
-                                                  anneal_strategy='linear')
+#    scheduler = OneCycleLR(optimizer, max_lr=0.008, steps_per_epoch=98,
+#                                                  epochs=24,
+#                                                  pct_start=5/24, 
+#                                                  anneal_strategy='linear')
 #    scheduler = StepLR(optimizer, step_size=5, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
 #    train_loss = []
@@ -84,8 +84,8 @@ def main(config_json):
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
-        scheduler.step(tr_loss)
-#        optimizer.step()
+#        scheduler.step(tr_loss)
+        optimizer.step()
 #        scheduler.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
