@@ -53,6 +53,7 @@ def main(config_json):
     metric_log.add_torch_summary = summary(model, input_size=(3, 64, 64))
     dataiter = iter(train_loader)
     images, labels = dataiter.next()
+    print(images,labels)
     metric_log.add_graph = (model, images,config_json["device"])
     
     lambda_l1 = 0
