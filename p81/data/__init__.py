@@ -7,6 +7,7 @@ Created on Wed Jun 30 22:19:56 2021
 """
 import torch
 from .cifar10 import cifar10
+from .tiny_imagenet import Tiny_image_net_Dataset_200
 from ..utils.transformations import train_transform_list,test_transform_list
 
 def train_dataloader_obj(dataset : str,batch_size : int,shuffle : bool = True,

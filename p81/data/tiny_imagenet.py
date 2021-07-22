@@ -25,9 +25,11 @@ class Tiny_image_net_Dataset_200:
         if not(os.path.exists(self.extracted_folder_path)):
             if not(os.path.isfile(self.zip_file_path)):
                 #download code here
+                print("Downloading ZIP File")
                 urllib.request.urlretrieve(url, self.zip_file_path)
                 pass
             #extract zip file
+            print(f"Extracting ZIP File to {root_dir}")
             with zipfile.ZipFile(self.zip_file_path, 'r') as zip_ref:
                 zip_ref.extractall(self.root_dir)
             os.rename(os.path.join(self.root_dir,"tiny-imagenet-200"),self.extracted_folder_path)
