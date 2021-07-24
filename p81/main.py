@@ -75,16 +75,16 @@ def main(config_json):
 #                                                  anneal_strategy='linear')
 #    scheduler = StepLR(optimizer, step_size=5, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
-    scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, 
-                                                max_lr=1.0,
-                                                steps_per_epoch=len(train_loader), 
-                                                epochs=config_json["epochs"],
-                                                pct_start=0.2,
-                                                div_factor=10,
-                                                three_phase=True, 
-                                                # final_div_factor=50,
-                                                 anneal_strategy='exp'
-                                                )
+    scheduler = OneCycleLR(optimizer, 
+                            max_lr=1.0,
+                            steps_per_epoch=len(train_loader), 
+                            epochs=config_json["epochs"],
+                            pct_start=0.2,
+                            div_factor=10,
+                            three_phase=True, 
+                            # final_div_factor=50,
+                             anneal_strategy='exp'
+                            )
 #    train_loss = []
 #    test_loss = []
 #    
