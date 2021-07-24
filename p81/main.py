@@ -67,7 +67,8 @@ def main(config_json):
 #                trainloader = train_loader,val_loader = test_loader,end_lr = 100,num_iter = 98)
 #    
     
-    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
+#    optimizer = optim.SGD(model.parameters(), lr=0.1, momentum=0.9, weight_decay = lambda_l2)
+    optimizer = optim.Adam(model.parameters(), lr=0.1)
 #    scheduler = OneCycleLR(optimizer, max_lr=0.008, steps_per_epoch=98,
 #                                                  epochs=24,
 #                                                  pct_start=5/24, 
