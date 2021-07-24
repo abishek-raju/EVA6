@@ -75,6 +75,16 @@ def main(config_json):
 #                                                  anneal_strategy='linear')
 #    scheduler = StepLR(optimizer, step_size=5, gamma=0.15)
 #    scheduler = ReduceLROnPlateau(optimizer)
+    scheduler = torch.optim.lr_scheduler.OneCycleLR(optimizer, 
+                                                max_lr=1.0,
+                                                steps_per_epoch=len(train_loader), 
+                                                epochs=config_json["epochs"],
+                                                pct_start=0.2,
+                                                div_factor=10,
+                                                three_phase=True, 
+                                                # final_div_factor=50,
+                                                 anneal_strategy='exp'
+                                                )
 #    train_loss = []
 #    test_loss = []
 #    
@@ -89,8 +99,8 @@ def main(config_json):
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
 #        scheduler.step(tr_loss)
-        optimizer.step()
-#        scheduler.step()
+#        optimizer.step()
+        scheduler.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
 #        test_loss.append(tst_loss),test_accuracy.append(tst_acc)
