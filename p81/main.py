@@ -47,7 +47,7 @@ def main(config_json):
                                       batch_size = config_json["tst_batch_size"],
                                       dataloader_kwargs = config_json["dev_kwargs"])
     
-    net = resnet.ResNet18(num_classes = 200)
+    net = resnet.ResNet18()
 #    print(net)
     model = net.to(config_json["device"])
     metric_log.add_torch_summary = summary(model, input_size=(3, 64, 64))
