@@ -84,6 +84,7 @@ def main(config_json):
     for epoch in range(1, config_json["epochs"]):
 
         tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
+        print("run here")
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
 #        scheduler.step(tr_loss)
