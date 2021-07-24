@@ -7,6 +7,7 @@ else:
 def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1 = None):
     average_epoch_loss = 0
     correct_predictions_epoch = 0
+    model = model.to(device)
     model.train()
     with tqdm(train_loader, unit="batch") as tepoch:
         for batch_idx, (data, target) in enumerate(tepoch):
