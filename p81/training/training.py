@@ -14,7 +14,9 @@ def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1
             tepoch.set_description(f"Train Epoch {epoch}")
             data, target = data.to(device), target.to(device)
             optimizer.zero_grad()
+            print("sending data to model")
             output = model(data)
+            print("model run successful")
             loss = loss_function(output, target)
             l1 = 0
             if lambda_l1:
