@@ -18,12 +18,14 @@ def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1
             output = model(data)
             print("model run successful")
             loss = loss_function(output, target)
+            print("calculated loss")
             l1 = 0
             if lambda_l1:
                 for p in model.parameters():
                     l1 = l1 + p.abs().sum()
             loss = loss + (lambda_l1 * l1)
             loss.backward()
+            print("calculated gradients")
             optimizer.step()
             average_epoch_loss += loss.item()
             correct_predictions = sum(output.argmax(dim = 1) == target)
