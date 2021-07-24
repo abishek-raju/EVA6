@@ -24,6 +24,7 @@ def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1
                 for p in model.parameters():
                     l1 = l1 + p.abs().sum()
             loss = loss + (lambda_l1 * l1)
+            print("l1 added to loss")
             loss.backward()
             print("calculated gradients")
             optimizer.step()
