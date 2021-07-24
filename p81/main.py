@@ -81,9 +81,7 @@ def main(config_json):
                             epochs=config_json["epochs"],
                             pct_start=0.2,
                             div_factor=10,
-                            three_phase=True, 
-                            # final_div_factor=50,
-                             anneal_strategy='exp'
+                            three_phase=True
                             )
 #    train_loss = []
 #    test_loss = []
