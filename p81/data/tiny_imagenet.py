@@ -67,6 +67,6 @@ class Tiny_image_net_Dataset_200:
         # print(class_index)
         # print(index_offset)
         if self._transform:
-            return self._transform(image = Image.open(image_path).convert('RGB')),class_index
+            return self._transform(Image.open(image_path).convert('RGB')),class_index
         else:
             return Image.open(image_path).convert('RGB'),class_index
