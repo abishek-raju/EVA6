@@ -34,10 +34,10 @@ import torchvision.transforms as transforms
 def train_transform_list(mean,std_dev):
     return transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std_dev)
+#        transforms.Normalize(mean=mean, std=std_dev)
     ])
 def test_transform_list(mean,std_dev):
     return transforms.Compose([
         transforms.ToTensor(),
-        transforms.Normalize(mean=mean, std=std_dev)
+#        transforms.Normalize(mean=mean, std=std_dev)
     ])
