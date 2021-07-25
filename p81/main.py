@@ -81,7 +81,8 @@ def main(config_json):
                             epochs=config_json["epochs"],
                             pct_start=0.2,
                             div_factor=10,
-                            three_phase=True
+                            three_phase=True,
+                            anneal_strategy='linear'
                             )
 #    train_loss = []
 #    test_loss = []
@@ -97,7 +98,7 @@ def main(config_json):
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
 #        scheduler.step(tr_loss)
-#        optimizer.step()
+        optimizer.step()
         scheduler.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
