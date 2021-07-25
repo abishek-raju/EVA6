@@ -66,7 +66,12 @@ class Tiny_image_net_Dataset_200:
         # print(image_path)
         # print(class_index)
         # print(index_offset)
+        image = cv2.imread(image_path)
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+
         if self._transform:
-            return self._transform(image = Image.open(image_path).convert('RGB')),class_index
+            # Apply transformations
+            image = self.transform(image=image)['image']
+            return image,class_index
         else:
             return Image.open(image_path).convert('RGB'),class_index
