@@ -63,7 +63,7 @@ def train_dataset(dataset : str,
     if dataset == "CIFAR10":
         tr_dataset = cifar10(root_dir, train=True,
                                         download=True)
-        tr_dataset.transforms = train_transform_list(tr_dataset.mean,tr_dataset.std_dev)
+#        tr_dataset.transforms = train_transform_list(tr_dataset.mean,tr_dataset.std_dev)
     elif dataset == "TINY_IMAGENET_200":
         tr_dataset = Tiny_image_net_Dataset_200()
         tr_dataset.transforms = train_transform_list(mean=[0.485, 0.456, 0.406], std_dev=[0.229, 0.224, 0.225])
