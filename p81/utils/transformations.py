@@ -11,8 +11,8 @@ from albumentations.pytorch import ToTensorV2
 
 def train_transform_list(mean,std_dev):
     return A.Compose(
-        [   ToTensorV2()
-#            A.Normalize(mean=mean, std=std_dev),
+        [   ToTensorV2(),
+            A.Normalize(mean=mean, std=std_dev)
 #            A.Rotate(limit = (-5,5),always_apply = True),
 #            A.ShiftScaleRotate(shift_limit=0.0625, scale_limit=0.50, rotate_limit=(-7,7), p=.75),
 #            A.CoarseDropout (max_holes = 1, max_height=16, max_width=16, min_holes = 1, min_height=16, min_width=16, fill_value=mean,p = 0.75),
@@ -24,8 +24,8 @@ def train_transform_list(mean,std_dev):
 
 def test_transform_list(mean,std_dev):
     return A.Compose(
-        [   ToTensorV2()
-#            A.Normalize(mean=mean, std=std_dev)
+        [   ToTensorV2(),
+            A.Normalize(mean=mean, std=std_dev)
 
         ]
     )
