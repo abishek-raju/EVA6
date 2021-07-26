@@ -71,7 +71,7 @@ class Tiny_image_net_Dataset_200:
 
         if self._transform:
             # Apply transformations
-            image = self.transform(image=image)['image']
+            image = self._transform(image=image)['image']
             return image,class_index
         else:
             return Image.open(image_path).convert('RGB'),class_index
