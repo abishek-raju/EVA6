@@ -94,13 +94,13 @@ def main(config_json):
     
     for epoch in range(1, config_json["epochs"]):
 
-        tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, epoch, lambda_l1)
+        tr_loss,tr_acc = training.train(model, config_json["device"], train_loader, nn.CrossEntropyLoss(), optimizer, scheduler,epoch, lambda_l1)
         print("run here")
         tst_loss,tst_acc = testing.test(model, config_json["device"], test_loader, epoch, nn.CrossEntropyLoss(), lambda_l1)
         
 #        scheduler.step(tr_loss)
-        optimizer.step()
-        scheduler.step()
+#        optimizer.step()
+#        scheduler.step()
         
 #        train_loss.append(tr_loss),train_accuracy.append(tr_acc)
 #        test_loss.append(tst_loss),test_accuracy.append(tst_acc)

@@ -4,7 +4,7 @@ if IN_COLAB:
     from tqdm.notebook import tqdm
 else:
     import tqdm
-def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1 = None):
+def train(model, device, train_loader, loss_function, optimizer, scheduler,epoch,lambda_l1 = None):
     average_epoch_loss = 0
     correct_predictions_epoch = 0
     model.train()
@@ -28,6 +28,7 @@ def train(model, device, train_loader, loss_function, optimizer, epoch,lambda_l1
             loss.backward()
 #            print("calculated gradients")
             optimizer.step()
+            scheduler.step()
             average_epoch_loss += loss.item()
             correct_predictions = sum(output.argmax(dim = 1) == target)
             correct_predictions_epoch += correct_predictions
