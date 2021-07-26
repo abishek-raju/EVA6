@@ -89,7 +89,7 @@ def main(config_json):
 #    
 #    train_accuracy = []
 #    test_accuracy = []
-#    print("run here")
+    print("run here")
     
     for epoch in range(1, config_json["epochs"]):
 
