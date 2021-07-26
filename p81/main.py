@@ -80,7 +80,7 @@ def main(config_json):
                             max_lr=1.0,
                             steps_per_epoch=len(train_loader), 
                             epochs=config_json["epochs"],
-                            pct_start=0.2,
+                            pct_start=0.5,
                             div_factor=10,
                             three_phase=True,
                             anneal_strategy='linear'
