@@ -55,7 +55,7 @@ def main(config_json):
     dataiter = iter(train_loader)
     images, labels = dataiter.next()
 #    print(images,labels)
-    metric_log.add_graph = (model, images,config_json["device"])
+    metric_log.add_graph = (model, images.float(),config_json["device"])
     
     lambda_l1 = 0
     lambda_l2 = 0
