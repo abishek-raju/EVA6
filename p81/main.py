@@ -50,6 +50,7 @@ def main(config_json):
     net = resnet.ResNet18()
 #    print(net)
     model = net.to(config_json["device"])
+    print("here2")
     metric_log.add_torch_summary = summary(model, input_size=(3, 64, 64))
     dataiter = iter(train_loader)
     images, labels = dataiter.next()
@@ -58,7 +59,7 @@ def main(config_json):
     
     lambda_l1 = 0
     lambda_l2 = 0
-    
+    print("here1")
     
 
     
