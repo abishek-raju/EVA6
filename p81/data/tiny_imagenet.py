@@ -34,6 +34,8 @@ class Tiny_image_net_Dataset_200:
                 zip_ref.extractall(self.root_dir)
             os.rename(os.path.join(self.root_dir,"tiny-imagenet-200"),self.extracted_folder_path)
         self.classwise = os.listdir(os.path.join(self.extracted_folder_path,"train"))
+        with open(os.path.join(self.extracted_folder_path,"words.txt"),"r") as f:
+            self.code_to_class_name = f.readlines()
     def __len__(self):
         if self.tr_tst == "train":
             return 70000
@@ -75,3 +77,8 @@ class Tiny_image_net_Dataset_200:
             return image,class_index
         else:
             return Image.open(image_path).convert('RGB'),class_index
+
+    def code_to_class_name(self,code):
+        for line in self.code_to_class_name:
+            if code in line:
+                return line.split("\t")[1].split(",")[0].rstrip()
