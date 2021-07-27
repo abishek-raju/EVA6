@@ -37,7 +37,7 @@ def train_transform_list(mean,std_dev):
 def test_transform_list(mean,std_dev):
     return A.Compose(
         [   
-            A.Normalize(mean=mean, std=std_dev),
+            A.Normalize([0.4803, 0.4482, 0.3976], [0.2766, 0.2691, 0.2819]),
             ToTensorV2()
 
         ]
