@@ -77,7 +77,7 @@ def image_grid(misclassified_images,misclassified_labels,misclassified_preds):
     figure = plt.figure(figsize=(12,rows*3))
     for i in range(len(misclassified_images)):    
         plt.subplot(rows, 5, i + 1)
-        plt.xlabel("Pred : "+str(misclassified_preds[i])+"    Truth : "+str(misclassified_labels[i]))
+        plt.xlabel("Pred : "+str(misclassified_preds[i])+"\nTruth : "+str(misclassified_labels[i]))
         plt.xticks([])
         plt.yticks([])
         plt.grid(False)
