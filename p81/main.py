@@ -131,9 +131,10 @@ def main(config_json):
                                                       code_to_class_function = train_loader.dataset.code_to_classname)
     metric_log.classified_images = get_misclassified_images.get_classified_images(config_json["max_classified_images"],
                                                   test_loader,
-                                                  train_loader.dataset.cifar_.classes,
+                                                  train_loader.dataset.classwise,
                                                   config_json["device"],
-                                                  model)
+                                                  model,
+                                                  code_to_class_function = train_loader.dataset.code_to_classname)
 
     return model,metric_log
 

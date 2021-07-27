@@ -79,8 +79,6 @@ class Tiny_image_net_Dataset_200:
             return Image.open(image_path).convert('RGB'),class_index
 
     def code_to_classname(self,code):
-        print("code")
-        print(code)
         for line in self.code_to_class_name:
             if self.classwise[code] in line:
                 return line.split("\t")[1].split(",")[0].rstrip()

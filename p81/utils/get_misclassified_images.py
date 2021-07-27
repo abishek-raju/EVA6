@@ -28,12 +28,13 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
                 misclassified_preds = misclassified_preds + list(output[output.argmax(dim = 1) != target].argmax(dim = 1))
             else:
                 break
-    misclassified_labels[:max_misclassified_images] = map(code_to_class_function,misclassified_labels[:max_misclassified_images])
-    misclassified_preds[:max_misclassified_images] = map(code_to_class_function,misclassified_preds[:max_misclassified_images])
+    if code_to_class_function != None:
+        misclassified_labels[:max_misclassified_images] = map(code_to_class_function,misclassified_labels[:max_misclassified_images])
+        misclassified_preds[:max_misclassified_images] = map(code_to_class_function,misclassified_preds[:max_misclassified_images])
     return misclassified_images[:max_misclassified_images],misclassified_labels[:max_misclassified_images],misclassified_preds[:max_misclassified_images]
 
 
-def get_classified_images(max_classified_images,test_loader,class_names,device,model):
+def get_classified_images(max_classified_images,test_loader,class_names,device,model,code_to_class_function = None):
     dataiter = iter(test_loader)
     # X_train, y_train = dataiter.next()
     
@@ -52,6 +53,9 @@ def get_classified_images(max_classified_images,test_loader,class_names,device,m
                 classified_preds = classified_preds + list(output[output.argmax(dim = 1) == target].argmax(dim = 1))
             else:
                 break
+    if code_to_class_function != None:
+        classified_labels[:max_classified_images] = map(code_to_class_function,classified_labels[:max_classified_images])
+        classified_preds[:max_classified_images] = map(code_to_class_function,classified_preds[:max_classified_images])
     return classified_images[:max_classified_images],classified_labels[:max_classified_images],classified_preds[:max_classified_images]
 
 
