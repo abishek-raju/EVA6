@@ -80,5 +80,5 @@ class Tiny_image_net_Dataset_200:
 
     def code_to_classname(self,code):
         for line in self.code_to_class_name:
-            if code in line:
+            if str(code) in line:
                 return line.split("\t")[1].split(",")[0].rstrip()
