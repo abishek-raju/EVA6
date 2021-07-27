@@ -33,6 +33,7 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
                         misclassified_preds = misclassified_preds + list(map(code_to_class_function,list(output[output.argmax(dim = 1) != target].argmax(dim = 1))))
                 else:
                     break
+            break
     return misclassified_images[:max_misclassified_images],misclassified_labels[:max_misclassified_images],misclassified_preds[:max_misclassified_images]
 
 
