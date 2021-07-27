@@ -9,7 +9,7 @@ import torch
 
 
 
-def get_misclassified_images(max_misclassified_images,test_loader,class_names,device,model):
+def get_misclassified_images(max_misclassified_images,test_loader,class_names,device,model,code_to_class_function = None):
     dataiter = iter(test_loader)
     # X_train, y_train = dataiter.next()
     
@@ -24,8 +24,12 @@ def get_misclassified_images(max_misclassified_images,test_loader,class_names,de
             output = model(data)
             if len(misclassified_images) <= max_misclassified_images:
                 misclassified_images = misclassified_images + list(data[output.argmax(dim = 1) != target])
-                misclassified_labels = misclassified_labels + list(target[output.argmax(dim = 1) != target])
-                misclassified_preds = misclassified_preds + list(output[output.argmax(dim = 1) != target].argmax(dim = 1))
+                if code_to_class_function == None:
+                    misclassified_labels = misclassified_labels + list(target[output.argmax(dim = 1) != target])
+                    misclassified_preds = misclassified_preds + list(output[output.argmax(dim = 1) != target].argmax(dim = 1))
+                else:
+                    misclassified_labels = misclassified_labels + list(map(code_to_class_function,list(target[output.argmax(dim = 1) != target])))
+                    misclassified_preds = misclassified_preds + list(map(code_to_class_function,list(output[output.argmax(dim = 1) != target].argmax(dim = 1))))
             else:
                 break
     return misclassified_images[:max_misclassified_images],misclassified_labels[:max_misclassified_images],misclassified_preds[:max_misclassified_images]
