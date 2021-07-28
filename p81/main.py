@@ -81,7 +81,7 @@ def main(config_json):
                             steps_per_epoch=len(train_loader), 
                             epochs=config_json["epochs"],
                             pct_start=0.2,
-                            div_factor=20,
+                            div_factor=5,
                             three_phase=True
 #                            anneal_strategy='linear'
                             )
