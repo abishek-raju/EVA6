@@ -29,6 +29,7 @@ def train_transform_list(mean,std_dev):
       A.VerticalFlip(),
       A.HorizontalFlip(),
       A.Normalize([0.4803, 0.4482, 0.3976], [0.2766, 0.2691, 0.2819]),
+      A.PadIfNeeded(min_height=76, min_width=76, always_apply=True),
       ToTensorV2()
     ])
 
